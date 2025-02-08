@@ -14,6 +14,7 @@ using List = std::vector<std::size_t>;
 using PairedLists = std::pair<List, List>;
 
 auto parseInput(std::string const&) noexcept -> PairedLists;
+auto calculateDistances(List, List) noexcept -> List;
 
 } // namespace HistorianHysteria
 

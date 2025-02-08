@@ -29,4 +29,19 @@ auto parseInput(std::string const& input) noexcept -> PairedLists
     return { leftList, rightList };
 }
 
+auto calculateDistances(List lhs, List rhs) noexcept -> List
+{
+    std::ranges::sort(lhs);
+    std::ranges::sort(rhs);
+
+    auto differences = List {};
+
+    std::ranges::transform(lhs, rhs, std::back_inserter(differences),
+        [](std::size_t const x, std::size_t const y) -> std::size_t {
+            return x >= y ? x - y : y - x;
+        });
+
+    return differences;
+}
+
 } // namespace HistorianHysteria

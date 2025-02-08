@@ -35,4 +35,25 @@ INSTANTIATE_TEST_CASE_P(ParseMultipleInputs, InputParsingTests,
     ::testing::Values(std::pair { std::string { exampleInput },
         PairedLists { { 3, 4, 2, 1, 3, 3 }, { 4, 3, 5, 3, 9, 3 } } }));
 
+class ListComparisonTests : public ::testing::TestWithParam<std::pair<PairedLists, List>> { };
+
+TEST_P(ListComparisonTests, ReturnElementwiseDifferencesOfSortedLists)
+{
+    auto const [pairedLists, expectedResult] = GetParam();
+
+    EXPECT_THAT(calculateDistances(pairedLists.first, pairedLists.second), expectedResult);
+}
+
+INSTANTIATE_TEST_CASE_P(CompareEmptyLists, ListComparisonTests,
+    ::testing::Values(std::pair { PairedLists { {}, {} }, List {} }));
+
+INSTANTIATE_TEST_CASE_P(CompareListsWithOneLocationEach, ListComparisonTests,
+    ::testing::Values(std::pair { PairedLists { { 2 }, { 5 } }, List { 3 } },
+        std::pair { PairedLists { { 4 }, { 3 } }, List { 1 } },
+        std::pair { PairedLists { { 3 }, { 3 } }, List { 0 } }));
+
+INSTANTIATE_TEST_CASE_P(CompareListsWitMultipleListsEach, ListComparisonTests,
+    ::testing::Values(std::pair {
+        PairedLists { { 3, 4, 2, 1, 3, 3 }, { 4, 3, 5, 3, 9, 3 } }, List { 2, 1, 0, 1, 2, 5 } }));
+
 } // namespace HistorianHysteria
