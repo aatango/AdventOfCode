@@ -1,9 +1,22 @@
 #include "HistorianHysteria.hh"
 
 #include <algorithm>
+#include <numeric>
 #include <sstream>
+#include <utility>
 
 namespace HistorianHysteria {
+
+// NOLINTNEXTLINE(performance-unnecessary-value-param)
+auto solve(std::string const input) noexcept -> std::size_t
+{
+
+    auto [leftList, rightList] = parseInput(input);
+    auto const calculatedDistances = calculateDistances(std::move(leftList), std::move(rightList));
+
+    return std::accumulate(
+        calculatedDistances.begin(), calculatedDistances.end(), std::size_t { 0 });
+}
 
 auto parseInput(std::string const& input) noexcept -> PairedLists
 {

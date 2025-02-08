@@ -10,6 +10,8 @@
 
 namespace HistorianHysteria {
 
+auto solve(std::string) noexcept -> std::size_t;
+
 using List = std::vector<std::size_t>;
 using PairedLists = std::pair<List, List>;
 

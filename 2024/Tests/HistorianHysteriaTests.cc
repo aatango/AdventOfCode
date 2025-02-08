@@ -4,6 +4,7 @@
 #include <gtest/gtest.h>
 
 #include <string_view>
+#include <utility>
 
 std::string_view constexpr exampleInput = { "3   4\n"
                                             "4   3\n"
@@ -13,6 +14,11 @@ std::string_view constexpr exampleInput = { "3   4\n"
                                             "3   3\n" };
 
 namespace HistorianHysteria {
+
+TEST(Day01Tests, CalculateTotalDistanceBetweenLists)
+{
+    EXPECT_EQ(solve(std::string { exampleInput }), 11);
+}
 
 class InputParsingTests : public ::testing::TestWithParam<std::pair<std::string, PairedLists>> { };
 
