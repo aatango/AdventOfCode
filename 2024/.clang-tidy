@@ -1,0 +1,32 @@
+---
+Checks: >
+  bugprone-*,
+  cert-*,
+  clang-analyzer-*, -clang-analyzer-osx.*, -clang-analyzer-optin.osx*, -clang-analyser-valist*, -clang-analyser-webkit*,
+  clang-diagnostic-*,
+  cppcoreguidelines-*, -cppcoreguidelines-avoid-magic-numbers, -cppcoreguidelines-narrowing-conversions,
+  concurrency-*,
+  google-default-arguments, google-explicit-constructor, google-readability-avoid-underscore-in-googletest-name, google-readability-casting, google-runtime-int, google-runtime-operator,
+  hicpp-*, -hicpp-braces-around-statements, -hicpp-named-parameter,
+  llvm-namespace-comment,
+  misc-*,
+  modernize-*,
+  performance-*,
+  readability-*, -readability-braces-around-statements, -readability-identifier-length, -readability-redundant-member-init,
+
+WarningsAsErrors: ''
+HeaderFilterRegex: ''
+FormatStyle: file
+User: aatango
+
+CheckOptions:
+  bugprone-argument-comment.StrictMode: true
+  bugprone-assert-side-effect.AssertMacros: "assert,ASSERT"
+  bugprone-dangling-handle.HandleClasses: "std::basic_string_view;std::span"
+  bugprone-misplaced-widening-cast.CheckImplicitCasts: true
+  bugprone-not-null-terminated-result.WantToUseSafeFunctions: false
+  bugprone-sizeof-expression.WarnOnSizeOfIntegerExpression: true
+  bugprone-suspicious-enum-usage.StrictMode: 1
+
+  readability-magic-numbers.IgnorePowersOf2IntegerValues: true
+  readability-redundant-access-specifiers.CheckFirstDeclaration: true
