@@ -18,29 +18,30 @@ using ::testing::Pair;
 
 namespace HistorianHysteria {
 
-TEST(Day01Tests, SolveBothPuzzlesForDay01)
+TEST(HistorianHysteriaTests, SolveBothPuzzles)
 {
     EXPECT_THAT(solve(std::string { exampleInput }), Pair(11, 31));
 }
 
-class InputParsingTests : public ::testing::TestWithParam<std::pair<std::string, PairedLists>> { };
+class HistorianHysteriaInputParsingTests
+    : public ::testing::TestWithParam<std::pair<std::string, PairedLists>> { };
 
-TEST_P(InputParsingTests, ParseInputIntoPairsOfLists)
+TEST_P(HistorianHysteriaInputParsingTests, ParseInputIntoPairsOfLists)
 {
     auto const [stringToTest, expectedResult] = GetParam();
 
     EXPECT_THAT(parseInput(stringToTest), expectedResult);
 }
 
-INSTANTIATE_TEST_CASE_P(ParseEmptyInput, InputParsingTests,
+INSTANTIATE_TEST_CASE_P(ParseEmptyInput, HistorianHysteriaInputParsingTests,
     ::testing::Values(std::pair { "", PairedLists { {}, {} } }));
 
-INSTANTIATE_TEST_CASE_P(ParseSingleInput, InputParsingTests,
+INSTANTIATE_TEST_CASE_P(ParseSingleInput, HistorianHysteriaInputParsingTests,
     ::testing::Values(std::pair { "3 4\n", PairedLists { { 3 }, { 4 } } },
         std::pair { "4   3\n", PairedLists { { 4 }, { 3 } } },
         std::pair { "2\t5\n", PairedLists { { 2 }, { 5 } } }));
 
-INSTANTIATE_TEST_CASE_P(ParseMultipleInputs, InputParsingTests,
+INSTANTIATE_TEST_CASE_P(ParseMultipleInputs, HistorianHysteriaInputParsingTests,
     ::testing::Values(std::pair { std::string { exampleInput },
         PairedLists { { 3, 4, 2, 1, 3, 3 }, { 4, 3, 5, 3, 9, 3 } } }));
 
