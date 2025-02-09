@@ -13,6 +13,7 @@ using Report = std::vector<std::size_t>;
 using Reports = std::vector<Report>;
 
 auto parseInput(std::string_view) noexcept -> Reports;
+auto validateReport(Report const&) noexcept -> bool;
 
 } // namespace RedNosedReports
 

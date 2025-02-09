@@ -37,4 +37,21 @@ INSTANTIATE_TEST_CASE_P(ParseMultipleInputs, RedNosedReportsInputParsingTests,
         Reports { { 7, 6, 4, 2, 1 }, { 1, 2, 7, 8, 9 }, { 9, 7, 6, 2, 1 }, { 1, 3, 2, 4, 5 },
             { 8, 6, 4, 4, 1 }, { 1, 3, 6, 7, 9 } } }));
 
+class ValidateReportTests : public ::testing::TestWithParam<std::pair<Report, bool>> { };
+
+TEST_P(ValidateReportTests, ValidateReports)
+{
+    auto const [report, isSafe] = GetParam();
+
+    EXPECT_EQ(validateReport(report), isSafe);
+}
+
+INSTANTIATE_TEST_CASE_P(ReportsToValidate, ValidateReportTests,
+    ::testing::Values(std::pair { Report { 7, 6, 4, 2, 1 }, true },
+        std::pair { Report { 1, 2, 7, 8, 9 }, false },
+        std::pair { Report { 9, 7, 6, 2, 1 }, false },
+        std::pair { Report { 1, 3, 2, 4, 5 }, false },
+        std::pair { Report { 8, 6, 4, 4, 1 }, false },
+        std::pair { Report { 1, 3, 6, 7, 9 }, true }));
+
 } // namespace RedNosedReports
