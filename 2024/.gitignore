@@ -1,3 +1,8 @@
+# Advent of Code Input files
+*Input/
+# Clangd indexing cache
+*.cache
+
 # Prerequisites
 *.d
 
