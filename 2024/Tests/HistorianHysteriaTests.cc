@@ -13,11 +13,14 @@ std::string_view constexpr exampleInput = { "3   4\n"
                                             "3   9\n"
                                             "3   3\n" };
 
+using ::testing::Eq;
+using ::testing::Pair;
+
 namespace HistorianHysteria {
 
-TEST(Day01Tests, CalculateTotalDistanceBetweenLists)
+TEST(Day01Tests, SolveBothPuzzlesForDay01)
 {
-    EXPECT_EQ(solve(std::string { exampleInput }), 11);
+    EXPECT_THAT(solve(std::string { exampleInput }), Pair(11, 31));
 }
 
 class InputParsingTests : public ::testing::TestWithParam<std::pair<std::string, PairedLists>> { };
@@ -61,5 +64,11 @@ INSTANTIATE_TEST_CASE_P(CompareListsWithOneLocationEach, ListComparisonTests,
 INSTANTIATE_TEST_CASE_P(CompareListsWitMultipleListsEach, ListComparisonTests,
     ::testing::Values(std::pair {
         PairedLists { { 3, 4, 2, 1, 3, 3 }, { 4, 3, 5, 3, 9, 3 } }, List { 2, 1, 0, 1, 2, 5 } }));
+
+TEST(ScoreListsTests, ScoreExampleLists)
+{
+    EXPECT_THAT(scoreLists(List { 3, 4, 2, 1, 3, 3 }, List { 4, 3, 5, 3, 9, 3 }),
+        Eq(List { 9, 4, 0, 0, 9, 9 }));
+}
 
 } // namespace HistorianHysteria

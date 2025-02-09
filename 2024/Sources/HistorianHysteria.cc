@@ -3,19 +3,27 @@
 #include <algorithm>
 #include <numeric>
 #include <sstream>
-#include <utility>
+
+namespace {
+
+auto accumulate(HistorianHysteria::List const& list) noexcept -> std::size_t
+{
+    return std::accumulate(list.begin(), list.end(), std::size_t { 0 });
+}
+
+} // namespace
 
 namespace HistorianHysteria {
 
 // NOLINTNEXTLINE(performance-unnecessary-value-param)
-auto solve(std::string const input) noexcept -> std::size_t
+auto solve(std::string const input) noexcept -> std::pair<std::size_t, std::size_t>
 {
+    auto const [leftList, rightList] = parseInput(input);
 
-    auto [leftList, rightList] = parseInput(input);
-    auto const calculatedDistances = calculateDistances(std::move(leftList), std::move(rightList));
+    auto const distances = calculateDistances(leftList, rightList);
+    auto const scores = scoreLists(leftList, rightList);
 
-    return std::accumulate(
-        calculatedDistances.begin(), calculatedDistances.end(), std::size_t { 0 });
+    return { ::accumulate(distances), ::accumulate(scores) };
 }
 
 auto parseInput(std::string const& input) noexcept -> PairedLists
@@ -55,6 +63,16 @@ auto calculateDistances(List lhs, List rhs) noexcept -> List
         });
 
     return differences;
+}
+
+auto scoreLists(List lhs, List const rhs) noexcept -> List
+{
+    std::vector<std::size_t> scores;
+
+    std::ranges::transform(lhs, std::back_inserter(scores),
+        [&rhs](auto const x) { return x * std::ranges::count(rhs, x); });
+
+    return scores;
 }
 
 } // namespace HistorianHysteria

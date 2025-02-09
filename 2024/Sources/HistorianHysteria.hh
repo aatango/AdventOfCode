@@ -10,13 +10,14 @@
 
 namespace HistorianHysteria {
 
-auto solve(std::string) noexcept -> std::size_t;
+auto solve(std::string) noexcept -> std::pair<std::size_t, std::size_t>;
 
 using List = std::vector<std::size_t>;
 using PairedLists = std::pair<List, List>;
 
 auto parseInput(std::string const&) noexcept -> PairedLists;
 auto calculateDistances(List, List) noexcept -> List;
+auto scoreLists(List, List) noexcept -> List;
 
 } // namespace HistorianHysteria
 
