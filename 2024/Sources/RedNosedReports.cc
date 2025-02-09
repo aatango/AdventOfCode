@@ -4,7 +4,7 @@
 #include <cmath>
 #include <numeric>
 #include <ranges>
-#include <string>
+#include <span>
 
 namespace {
 
@@ -43,6 +43,12 @@ auto isReportStable(RedNosedReports::Report const& report) noexcept -> bool
 } // namespace
 
 namespace RedNosedReports {
+
+// NOLINTNEXTLINE(performance-unnecessary-value-param)
+auto solve(std::string const input) noexcept -> std::size_t
+{
+    return std::ranges::count_if(parseInput(input), [](auto&& r) { return validateReport(r); });
+}
 
 auto parseInput(std::string_view const input) noexcept -> Reports
 {

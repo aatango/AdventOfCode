@@ -4,10 +4,13 @@
 #define REDNOSEDREPORTS_HH
 
 #include <cstddef>
+#include <string>
 #include <string_view>
 #include <vector>
 
 namespace RedNosedReports {
+
+auto solve(std::string) noexcept -> std::size_t;
 
 using Report = std::vector<std::size_t>;
 using Reports = std::vector<Report>;

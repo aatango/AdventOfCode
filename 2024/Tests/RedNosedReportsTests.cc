@@ -3,10 +3,6 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include <string>
-#include <string_view>
-#include <utility>
-
 std::string_view constexpr exampleInput = { "7 6 4 2 1\n"
                                             "1 2 7 8 9\n"
                                             "9 7 6 2 1\n"
@@ -15,6 +11,11 @@ std::string_view constexpr exampleInput = { "7 6 4 2 1\n"
                                             "1 3 6 7 9\n" };
 
 namespace RedNosedReports {
+
+TEST(RedNosedReportsTests, SolveBothPuzzles)
+{
+    EXPECT_THAT(solve(std::string { exampleInput }), 2);
+}
 
 class RedNosedReportsInputParsingTests
     : public ::testing::TestWithParam<std::pair<std::string, Reports>> { };
