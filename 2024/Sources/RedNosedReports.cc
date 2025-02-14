@@ -45,9 +45,11 @@ auto isReportStable(RedNosedReports::Report const& report) noexcept -> bool
 namespace RedNosedReports {
 
 // NOLINTNEXTLINE(performance-unnecessary-value-param)
-auto solve(std::string const input) noexcept -> std::size_t
+auto solve(std::string const input) noexcept -> std::pair<std::size_t, std::size_t>
 {
-    return std::ranges::count_if(parseInput(input), [](auto&& r) { return validateReport(r); });
+    auto const parsedInput = parseInput(input);
+    return { std::ranges::count_if(parsedInput, [](auto&& r) { return validateReport(r, false); }),
+        std::ranges::count_if(parsedInput, [](auto&& r) { return validateReport(r, true); }) };
 }
 
 auto parseInput(std::string_view const input) noexcept -> Reports
@@ -58,9 +60,20 @@ auto parseInput(std::string_view const input) noexcept -> Reports
         | std::ranges::to<Reports>();
 }
 
-auto validateReport(Report const& report) noexcept -> bool
+auto validateReport(Report const& report, bool isDampened) noexcept -> bool
 {
-    return ::isReportSorted(report) && ::isReportStable(report);
+    if (!isDampened)
+        return ::isReportSorted(report) && ::isReportStable(report);
+
+    for (auto i = std::size_t { 0 }; i < report.size(); ++i) {
+        auto subReport = report;
+        subReport.erase(subReport.begin() + i);
+
+        if (::isReportSorted(subReport) && ::isReportStable(subReport))
+            return true;
+    }
+
+    return false;
 }
 
 } // namespace RedNosedReports

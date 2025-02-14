@@ -10,11 +10,13 @@ std::string_view constexpr exampleInput = { "7 6 4 2 1\n"
                                             "8 6 4 4 1\n"
                                             "1 3 6 7 9\n" };
 
+using ::testing::Pair;
+
 namespace RedNosedReports {
 
 TEST(RedNosedReportsTests, SolveBothPuzzles)
 {
-    EXPECT_THAT(solve(std::string { exampleInput }), 2);
+    EXPECT_THAT(solve(std::string { exampleInput }), Pair(2, 4));
 }
 
 class RedNosedReportsInputParsingTests
@@ -53,6 +55,22 @@ INSTANTIATE_TEST_CASE_P(ReportsToValidate, ValidateReportTests,
         std::pair { Report { 9, 7, 6, 2, 1 }, false },
         std::pair { Report { 1, 3, 2, 4, 5 }, false },
         std::pair { Report { 8, 6, 4, 4, 1 }, false },
+        std::pair { Report { 1, 3, 6, 7, 9 }, true }));
+
+class ValidateDampenedReportsTests : public ::testing::TestWithParam<std::pair<Report, bool>> { };
+
+TEST_P(ValidateDampenedReportsTests, ValidateReports)
+{
+    auto const [report, isSafe] = GetParam();
+
+    EXPECT_THAT(validateReport(report, true), isSafe);
+}
+
+INSTANTIATE_TEST_CASE_P(ReportsToValidate, ValidateDampenedReportsTests,
+    ::testing::Values(std::pair { Report { 7, 6, 4, 2, 1 }, true },
+        std::pair { Report { 1, 2, 7, 8, 9 }, false },
+        std::pair { Report { 9, 7, 6, 2, 1 }, false }, std::pair { Report { 1, 3, 2, 4, 5 }, true },
+        std::pair { Report { 8, 6, 4, 4, 1 }, true },
         std::pair { Report { 1, 3, 6, 7, 9 }, true }));
 
 } // namespace RedNosedReports
