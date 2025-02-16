@@ -1,25 +1,32 @@
 #include "HistorianHysteria.hh"
+#include "RedNosedReports.hh"
 
-#include <cstdint>
 #include <filesystem>
-#include <format>
 #include <fstream>
 #include <iterator>
 #include <print>
+#include <string_view>
 
-enum class Puzzles : std::uint8_t {
-    HistorianHysteria = 01,
-};
+namespace {
+
+void solve(std::size_t const day, std::string_view const name, auto solverFunction) noexcept
+{
+    auto const inputFile = std::filesystem::path { "Input" } / name;
+
+    auto inputStream = std::ifstream { inputFile };
+
+    auto inputData = std::string { std::istreambuf_iterator<char> { inputStream },
+        std::istreambuf_iterator<char> {} };
+
+    auto const [firstResult, secondResult] = solverFunction(std::move(inputData));
+
+    std::println("Day {:02}, {}: {} | {}", day, name, firstResult, secondResult);
+}
+
+} // namespace
 
 int main()
 {
-    auto const inputFolder = std::filesystem::path("Input");
-
-    auto inputDay01 = std::ifstream { inputFolder
-        / std::format("{:02}.txt", static_cast<int>(Puzzles::HistorianHysteria)) };
-
-    auto const [firstResult, secondResult] = HistorianHysteria::solve(std::string {
-        std::istreambuf_iterator<char> { inputDay01 }, std::istreambuf_iterator<char> {} });
-
-    std::println("Day 01 - Historian Hysteria: {} {}", firstResult, secondResult);
+    ::solve(01, "HistorianHysteria", ::HistorianHysteria::solve);
+    ::solve(02, "RedNosedReports", ::RedNosedReports::solve);
 }

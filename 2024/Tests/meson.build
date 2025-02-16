@@ -1,9 +1,10 @@
 gtest = dependency('gtest', main: true, required: true, version: '>=1.14.0')
 gmock = dependency('gmock', required: true, version: '>=1.14.0')
 
-testSources = (
-  'HistorianHysteriaTests.cc'
-)
+testSources = [
+  'HistorianHysteriaTests.cc',
+  'RedNosedReportsTests.cc'
+]
 
 exe = executable(
   'AdventOfCode2024Tests',
