@@ -4,6 +4,20 @@
 
 namespace MullItOver {
 
+// NOLINTNEXTLINE(performance-unnecessary-value-param)
+auto solve(std::string input) noexcept -> std::pair<std::size_t, std::size_t>
+{
+    auto parsedInput = parseInput(input);
+
+    auto sumOfInstructions = std::size_t { 0 };
+
+    for (Multiplication mult : parsedInput) {
+        sumOfInstructions += (mult.multiplicand * mult.multiplier);
+    }
+
+    return { sumOfInstructions, 0 };
+}
+
 auto parseInput(std::string const& input) noexcept -> Multiplications
 {
     auto const pattern = std::regex { R"(mul\((\d{1,3}),(\d{1,3})\))" };

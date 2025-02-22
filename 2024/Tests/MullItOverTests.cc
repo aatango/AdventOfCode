@@ -3,12 +3,19 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include <string>
+#include <string_view>
 
 std::string_view constexpr exampleInput
     = "xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))";
 
+using ::testing::Pair;
+
 namespace MullItOver {
+
+TEST(MullItOverTests, SolveFirstPuzzle)
+{
+    EXPECT_THAT(solve(std::string { exampleInput }), Pair(161, 0));
+}
 
 class MullItOverInputParsingTests
     : public ::testing::TestWithParam<std::pair<std::string, Multiplications>> { };
