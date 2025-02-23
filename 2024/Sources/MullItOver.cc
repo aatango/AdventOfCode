@@ -25,6 +25,18 @@ void disableInstructions(std::string& input) noexcept
     }
 }
 
+auto accumulateMultiplications(MullItOver::Multiplications const& multiplications) noexcept
+    -> std::size_t
+{
+    auto sumOfInstructions = std::size_t { 0 };
+
+    for (MullItOver::Multiplication mult : multiplications) {
+        sumOfInstructions += (mult.multiplicand * mult.multiplier);
+    }
+
+    return sumOfInstructions;
+}
+
 } // namespace
 
 namespace MullItOver {
@@ -32,15 +44,8 @@ namespace MullItOver {
 // NOLINTNEXTLINE(performance-unnecessary-value-param)
 auto solve(std::string input) noexcept -> std::pair<std::size_t, std::size_t>
 {
-    auto parsedInput = parseInput(input);
-
-    auto sumOfInstructions = std::size_t { 0 };
-
-    for (Multiplication mult : parsedInput) {
-        sumOfInstructions += (mult.multiplicand * mult.multiplier);
-    }
-
-    return { sumOfInstructions, 0 };
+    return { ::accumulateMultiplications(parseInput(input)),
+        ::accumulateMultiplications(parseInput(input, true)) };
 }
 
 // NOLINTNEXTLINE(performance-unnecessary-value-param)

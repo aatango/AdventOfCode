@@ -14,7 +14,7 @@ namespace MullItOver {
 
 TEST(MullItOverTests, SolveFirstPuzzle)
 {
-    EXPECT_THAT(solve(std::string { exampleInput }), Pair(161, 0));
+    EXPECT_THAT(solve(std::string { exampleInput }), Pair(161, 48));
 }
 
 class MullItOverInputParsingTests
