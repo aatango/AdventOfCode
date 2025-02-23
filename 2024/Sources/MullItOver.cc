@@ -1,6 +1,31 @@
 #include "MullItOver.hh"
 
 #include <regex>
+#include <string_view>
+
+namespace {
+
+void disableInstructions(std::string& input) noexcept
+{
+    std::string_view constexpr disablingInstruction = "don't()";
+    std::string_view constexpr enablingInstruction = "do()";
+
+    auto startIndex = input.find(disablingInstruction);
+
+    while (startIndex != std::string::npos) {
+        if (auto endIndex
+            = input.find(enablingInstruction, startIndex + disablingInstruction.size());
+            endIndex != std::string::npos) {
+            input.erase(startIndex, endIndex - (startIndex + enablingInstruction.size()));
+        } else {
+            input.erase(startIndex);
+        }
+
+        startIndex = input.find(disablingInstruction);
+    }
+}
+
+} // namespace
 
 namespace MullItOver {
 
@@ -18,8 +43,14 @@ auto solve(std::string input) noexcept -> std::pair<std::size_t, std::size_t>
     return { sumOfInstructions, 0 };
 }
 
-auto parseInput(std::string const& input) noexcept -> Multiplications
+// NOLINTNEXTLINE(performance-unnecessary-value-param)
+auto parseInput(std::string input, bool handleConditionals) noexcept -> Multiplications
 {
+
+    if (handleConditionals) {
+        ::disableInstructions(input);
+    }
+
     auto const pattern = std::regex { R"(mul\((\d{1,3}),(\d{1,3})\))" };
 
     auto const inputBegin = std::sregex_iterator(input.begin(), input.end(), pattern);

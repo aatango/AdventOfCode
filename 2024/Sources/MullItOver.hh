@@ -22,7 +22,7 @@ private:
 
 using Multiplications = std::vector<Multiplication>;
 
-auto parseInput(std::string const&) noexcept -> Multiplications;
+auto parseInput(std::string, bool handleConditionals = false) noexcept -> Multiplications;
 
 } // namespace MullItOver
 

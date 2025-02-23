@@ -6,7 +6,7 @@
 #include <string_view>
 
 std::string_view constexpr exampleInput
-    = "xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))";
+    = "xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))";
 
 using ::testing::Pair;
 
@@ -40,5 +40,12 @@ INSTANTIATE_TEST_CASE_P(ParseSingleInput, MullItOverInputParsingTests,
 INSTANTIATE_TEST_CASE_P(ParseMultipleInputs, MullItOverInputParsingTests,
     ::testing::Values(
         std::pair { exampleInput, Multiplications { { 2, 4 }, { 5, 5 }, { 11, 8 }, { 8, 5 } } }));
+
+TEST(MullItOverTests, HandleConditionalsInInputs)
+{
+    auto const expectedMultiplications = Multiplications { { 2, 4 }, { 8, 5 } };
+
+    EXPECT_EQ(parseInput(std::string { exampleInput }, true), expectedMultiplications);
+}
 
 } // namespace MullItOver
