@@ -1,4 +1,4 @@
-// Advent of Code, 2024, day 01
+// Advent of Code, 2024, day 03
 
 #ifndef MULLITOVER_HH
 #define MULLITOVER_HH
