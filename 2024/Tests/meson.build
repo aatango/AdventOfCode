@@ -3,7 +3,8 @@ gmock = dependency('gmock', required: true, version: '>=1.14.0')
 
 testSources = [
   'HistorianHysteriaTests.cc',
-  'RedNosedReportsTests.cc'
+  'RedNosedReportsTests.cc',
+  'MullItOverTests.cc'
 ]
 
 exe = executable(

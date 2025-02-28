@@ -1,4 +1,5 @@
 #include "HistorianHysteria.hh"
+#include "MullItOver.hh"
 #include "RedNosedReports.hh"
 
 #include <filesystem>
@@ -29,4 +30,5 @@ int main()
 {
     ::solve(01, "HistorianHysteria", ::HistorianHysteria::solve);
     ::solve(02, "RedNosedReports", ::RedNosedReports::solve);
+    ::solve(03, "MullItOver", ::MullItOver::solve);
 }

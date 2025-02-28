@@ -1,6 +1,7 @@
 library_sources = [
   'HistorianHysteria.cc',
-  'RedNosedReports.cc'
+  'RedNosedReports.cc',
+  'MullItOver.cc'
 ]
 
 AdventOfCode2024 = library('AdventOfCode2024Lib', library_sources)
