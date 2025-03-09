@@ -25,7 +25,7 @@ namespace CeresSearch {
 
 TEST(CeresSearchTests, SolveFirstPuzzle)
 {
-    EXPECT_THAT(solve(std::string { exampleInput }), Pair(18, 0));
+    EXPECT_THAT(solve(std::string { exampleInput }), Pair(18, 9));
 }
 
 class GridDimensionTests

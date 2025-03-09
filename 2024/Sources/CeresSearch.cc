@@ -20,7 +20,7 @@ auto solve(std::string input) noexcept -> std::pair<std::size_t, std::size_t>
 {
     auto const grid = Grid { input };
 
-    return { grid.countXmas(), 0 };
+    return { grid.countXmas(), grid.countCrossedMas() };
 }
 
 Grid::Grid(std::string_view const input)
