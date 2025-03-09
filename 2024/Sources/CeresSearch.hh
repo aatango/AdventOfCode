@@ -26,12 +26,15 @@ public:
     [[nodiscard]] auto height() const noexcept -> std::size_t;
 
     [[nodiscard]] auto countXmas() const noexcept -> std::size_t;
+    [[nodiscard]] auto countCrossedMas() const noexcept -> std::size_t;
 
 private:
     [[nodiscard]] auto isXmasEast(Position) const noexcept -> bool;
     [[nodiscard]] auto isXmasSouthEast(Position) const noexcept -> bool;
     [[nodiscard]] auto isXmasSouth(Position) const noexcept -> bool;
     [[nodiscard]] auto isXmasSouthWest(Position) const noexcept -> bool;
+
+    [[nodiscard]] auto isCrossedMas(Position) const noexcept -> bool;
 
     std::size_t m_height;
     std::size_t m_width;

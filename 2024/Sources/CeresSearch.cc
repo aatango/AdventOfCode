@@ -9,6 +9,7 @@
 namespace {
 
 auto isXmas(std::string_view const sv) noexcept -> bool { return sv == "xmas" || sv == "samx"; }
+auto isMas(std::string_view const sv) noexcept -> bool { return sv == "mas" || sv == "sam"; }
 
 } // namespace
 
@@ -54,6 +55,23 @@ auto Grid::countXmas() const noexcept -> std::size_t
     }
 
     return countedXmas;
+}
+
+auto Grid::countCrossedMas() const noexcept -> std::size_t
+{
+    auto countedCrossedMas = std::size_t { 0 };
+
+    for (auto const x : std::views::iota(std::size_t { 0 }, m_width - 1)) {
+        for (auto const y : std::views::iota(std::size_t { 0 }, m_height - 1)) {
+
+            if (m_data.at(x + (y * m_width)) == 'a') {
+                countedCrossedMas
+                    += static_cast<std::size_t>(isCrossedMas(Position { .u = x, .v = y }));
+            }
+        }
+    }
+
+    return countedCrossedMas;
 }
 
 auto Grid::isXmasEast(Position startPosition) const noexcept -> bool
@@ -112,6 +130,35 @@ auto Grid::isXmasSouthWest(Position startPosition) const noexcept -> bool
     }
 
     return ::isXmas(std::string_view { sampleArray });
+}
+
+auto Grid::isCrossedMas(Position startPosition) const noexcept -> bool
+{
+    if (startPosition.u == 0 || startPosition.v == 0)
+        return false;
+
+    if (m_height < 3 || m_width < 3)
+        return false;
+
+    auto const isFallingMas = [this](Position pivot) -> bool {
+        auto const northWestChar = m_data.at((pivot.u - 1) + ((pivot.v - 1) * m_width));
+        auto const southEastChar = m_data.at((pivot.u + 1) + ((pivot.v + 1) * m_width));
+
+        auto const fallingDiagonal = std::array<char, 3> { northWestChar, 'a', southEastChar };
+
+        return ::isMas(std::string_view { fallingDiagonal });
+    }(startPosition);
+
+    auto const isRisingMas = [this](Position pivot) -> bool {
+        auto const southWestChar = m_data.at((pivot.u - 1) + ((pivot.v + 1) * m_width));
+        auto const northEastChar = m_data.at((pivot.u + 1) + ((pivot.v - 1) * m_width));
+
+        auto const risingDiagonal = std::array<char, 3> { southWestChar, 'a', northEastChar };
+
+        return ::isMas(std::string_view { risingDiagonal });
+    }(startPosition);
+
+    return isFallingMas && isRisingMas;
 }
 
 } // namespace CeresSearch

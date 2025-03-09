@@ -71,5 +71,20 @@ INSTANTIATE_TEST_CASE_P(XmasStrings, XmasCountingTests,
         std::pair { "S...\n.A..\n..M.\n...X\n", 1 }, std::pair { "S...\nA...\nM...\nX...\n", 1 },
         std::pair { "Xmas\nMm..\nA.A.\nS..s\n", 3 }, std::pair { "xmaS\n..aA\n.M.M\nx..X\n", 3 }));
 
-TEST(t, t) { EXPECT_TRUE(true); }
+class CrossedMasTests : public testing::TestWithParam<std::pair<std::string_view, std::size_t>> { };
+
+TEST_P(CrossedMasTests, CountCrossedMas)
+{
+    auto const [content, expectedCount] = GetParam();
+
+    auto const grid = Grid { content };
+
+    EXPECT_EQ(grid.countCrossedMas(), expectedCount);
+}
+
+INSTANTIATE_TEST_CASE_P(SingleMas, CrossedMasTests,
+    testing::Values(std::pair { "MAS\n", 0 }, std::pair { "M..\nA..\nS..\n", 0 },
+        std::pair { "M.M\n.A.\nS.S\n", 1 }, std::pair { "M.S\n.A.\nM.S\n", 1 },
+        std::pair { "S.M\n.A.\nS.M\n", 1 }, std::pair { "S.S\n.A.\nM.M\n", 1 }));
+
 } // namespace CeresSearch
