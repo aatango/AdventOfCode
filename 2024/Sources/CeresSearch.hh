@@ -4,10 +4,14 @@
 #define CERESSEARCH_HH
 
 #include <cstddef>
+#include <string>
 #include <string_view>
+#include <utility>
 #include <vector>
 
 namespace CeresSearch {
+
+auto solve(std::string) noexcept -> std::pair<std::size_t, std::size_t>;
 
 struct Position {
     std::size_t u;

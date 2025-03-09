@@ -14,6 +14,14 @@ auto isXmas(std::string_view const sv) noexcept -> bool { return sv == "xmas" ||
 
 namespace CeresSearch {
 
+// NOLINTNEXTLINE(performance-unnecessary-value-param)
+auto solve(std::string input) noexcept -> std::pair<std::size_t, std::size_t>
+{
+    auto const grid = Grid { input };
+
+    return { grid.countXmas(), 0 };
+}
+
 Grid::Grid(std::string_view const input)
     : m_height { static_cast<std::size_t>(std::ranges::count(input, '\n')) }
     , m_width { static_cast<std::size_t>(std::ranges::find(input, '\n') - input.begin()) }

@@ -19,7 +19,14 @@ std::string_view constexpr exampleInput = "MMMSXXMASM\n"
                                           "MAMMMXMMMM\n"
                                           "MXMXAXMASX\n";
 
+using testing::Pair;
+
 namespace CeresSearch {
+
+TEST(CeresSearchTests, SolveFirstPuzzle)
+{
+    EXPECT_THAT(solve(std::string { exampleInput }), Pair(18, 0));
+}
 
 class GridDimensionTests
     : public testing::TestWithParam<std::tuple<std::string_view, std::size_t, std::size_t>> { };
