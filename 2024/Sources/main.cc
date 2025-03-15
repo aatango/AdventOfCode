@@ -1,3 +1,4 @@
+#include "CeresSearch.hh"
 #include "HistorianHysteria.hh"
 #include "MullItOver.hh"
 #include "RedNosedReports.hh"
@@ -28,7 +29,8 @@ void solve(std::size_t const day, std::string_view const name, auto solverFuncti
 
 int main()
 {
-    ::solve(01, "HistorianHysteria", ::HistorianHysteria::solve);
-    ::solve(02, "RedNosedReports", ::RedNosedReports::solve);
-    ::solve(03, "MullItOver", ::MullItOver::solve);
+    ::solve(01, "HistorianHysteria", HistorianHysteria::solve);
+    ::solve(02, "RedNosedReports", RedNosedReports::solve);
+    ::solve(03, "MullItOver", MullItOver::solve);
+    ::solve(04, "CeresSearch", CeresSearch::solve);
 }
