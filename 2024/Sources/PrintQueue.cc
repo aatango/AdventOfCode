@@ -1,7 +1,6 @@
 #include "PrintQueue.hh"
 
-#include <algorithm>
-#include <iterator>
+#include <cassert>
 #include <print>
 #include <ranges>
 #include <string>
@@ -33,6 +32,16 @@ auto parseInput(std::string const input) noexcept -> std::pair<OrderingRule, Pag
     auto const pageUpdates = std::string_view { input.cbegin() + splitPosition + 2, input.cend() };
 
     return { {}, ::parsePageUpdates(pageUpdates) };
+}
+
+auto findMiddlePage(std::span<std::size_t const> const pages) noexcept -> std::size_t
+{
+    assert((pages.size() % 2 == 1) && "Can only find middle page of an odd numbered update!");
+
+    auto const iteratorToMiddlePage
+        = pages.cbegin() + static_cast<std::ptrdiff_t>(pages.size() / 2);
+
+    return *iteratorToMiddlePage;
 }
 
 } // namespace PrintQueue

@@ -58,3 +58,10 @@ TEST(PrintQueueTests, ParsePageUpdates)
             PageUpdates { { 75, 47, 61, 53, 29 }, { 97, 61, 53, 29, 13 }, { 75, 29, 13 },
                 { 75, 97, 47, 61, 53 }, { 61, 13, 29 }, { 97, 13, 75, 29, 47 } }));
 }
+
+TEST(PrintQueueTests, FindMiddlePageNumber)
+{
+    EXPECT_EQ(findMiddlePage(std::array<std::size_t, 5> { 75, 47, 61, 53, 29 }), 61);
+    EXPECT_EQ(findMiddlePage(std::array<std::size_t, 5> { 97, 61, 53, 29, 13 }), 53);
+    EXPECT_EQ(findMiddlePage(std::array<std::size_t, 3> { 75, 29, 13 }), 29);
+}
