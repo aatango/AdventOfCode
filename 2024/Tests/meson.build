@@ -6,6 +6,7 @@ testSources = [
   'RedNosedReportsTests.cc',
   'MullItOverTests.cc',
   'CeresSearchTests.cc',
+  'PrintQueueTests.cc',
 ]
 
 exe = executable(
