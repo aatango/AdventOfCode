@@ -12,7 +12,7 @@ Checks: >
   misc-*,
   modernize-*,
   performance-*,
-  readability-*, -readability-braces-around-statements, -readability-identifier-length, -readability-redundant-member-init,
+  readability-*, -readability-braces-around-statements, -readability-identifier-length, -readability-magic-numbers, -readability-redundant-member-init,
 
 WarningsAsErrors: ''
 HeaderFilterRegex: ''
@@ -26,7 +26,7 @@ CheckOptions:
   bugprone-misplaced-widening-cast.CheckImplicitCasts: true
   bugprone-not-null-terminated-result.WantToUseSafeFunctions: false
   bugprone-sizeof-expression.WarnOnSizeOfIntegerExpression: true
-  bugprone-suspicious-enum-usage.StrictMode: 1
+  bugprone-suspicious-enum-usage.StrictMode: true
 
-  readability-magic-numbers.IgnorePowersOf2IntegerValues: true
+  readability-braces-around-statements.ShortStatementLines: 2
   readability-redundant-access-specifiers.CheckFirstDeclaration: true
