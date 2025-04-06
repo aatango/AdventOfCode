@@ -40,6 +40,30 @@ using testing::Pair;
 
 using namespace PrintQueue;
 
+TEST(PrintQueueTests, ParseOrderingRules)
+{
+    EXPECT_THAT(parseInput("\n\n"), Pair(OrderingRules {}, _));
+    EXPECT_THAT(parseInput("\n\n75,47,61,53,29\n"), Pair(OrderingRules {}, _));
+
+    EXPECT_THAT(parseInput("53|13\n\n"), Pair(OrderingRules { { 53, { 13 } } }, _));
+    EXPECT_THAT(parseInput("53|13\n\n75,47,61,53,29\n"), Pair(OrderingRules { { 53, { 13 } } }, _));
+
+    EXPECT_THAT(parseInput("47|53\n47|13\n53|13\n\n"),
+        Pair(OrderingRules { { 47, { 53, 13 } }, { 53, { 13 } } }, _));
+
+    EXPECT_THAT(parseInput(std::string { exampleInput }),
+        Pair(
+            OrderingRules {
+                { 47, { 53, 13, 61, 29 } },
+                { 97, { 13, 61, 47, 29, 53, 75 } },
+                { 75, { 29, 53, 47, 61, 13 } },
+                { 61, { 13, 53, 29 } },
+                { 29, { 13 } },
+                { 53, { 29, 13 } },
+            },
+            _));
+}
+
 TEST(PrintQueueTests, ParsePageUpdates)
 {
     EXPECT_THAT(parseInput("\n\n"), Pair(_, PageUpdates {}));

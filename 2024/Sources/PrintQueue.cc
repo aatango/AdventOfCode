@@ -8,6 +8,35 @@
 
 namespace {
 
+auto constexpr parseOrderingRules(std::string_view const input) noexcept
+    -> PrintQueue::OrderingRules
+{
+    auto const lines = input | std::views::split('\n')
+        | std::views::take_while([](auto&& line) { return !line.empty(); })
+        | std::ranges::to<std::vector>();
+
+    auto const keys = lines | std::views::transform([](auto&& line) {
+        assert((line[2] == '|') && "Key must be two digits long!");
+
+        return std::stoull(std::string { line.cbegin(), line.cbegin() + 2 });
+    });
+
+    auto const values = lines | std::views::transform([](auto&& line) {
+        assert((line[5] == '\n') && "Value must be two digits long!");
+
+        return std::stoull(std::string { line.cend() - 2, line.cend() });
+    });
+
+    PrintQueue::OrderingRules rule;
+
+    std::ranges::for_each(std::views::zip(keys, values), [&rule](auto&& zipped) {
+        auto const [key, value] = zipped;
+        rule[key].push_back(value);
+    });
+
+    return rule;
+}
+
 auto constexpr parsePageUpdates(std::string_view const input) noexcept -> PrintQueue::PageUpdates
 {
     auto constexpr parsePageUpdate = [](auto&& update) {
@@ -26,13 +55,14 @@ auto constexpr parsePageUpdates(std::string_view const input) noexcept -> PrintQ
 namespace PrintQueue {
 
 // NOLINTNEXTLINE(performance-unnecessary-value-param)
-auto parseInput(std::string input) noexcept -> std::pair<OrderingRules, PageUpdates>
+auto parseInput(std::string const input) noexcept -> std::pair<OrderingRules, PageUpdates>
 {
     auto const splitPosition = static_cast<std::ptrdiff_t>(input.find("\n\n"));
 
+    auto const orderingRules = std::string_view { input.cbegin(), input.cbegin() + splitPosition };
     auto const pageUpdates = std::string_view { input.cbegin() + splitPosition + 2, input.cend() };
 
-    return { {}, ::parsePageUpdates(pageUpdates) };
+    return { ::parseOrderingRules(orderingRules), ::parsePageUpdates(pageUpdates) };
 }
 
 auto isValidPageUpdate(
