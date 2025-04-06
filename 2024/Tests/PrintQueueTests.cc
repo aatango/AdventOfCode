@@ -59,6 +59,26 @@ TEST(PrintQueueTests, ParsePageUpdates)
                 { 75, 97, 47, 61, 53 }, { 61, 13, 29 }, { 97, 13, 75, 29, 47 } }));
 }
 
+TEST(PrintQueueTests, ValidatePageUpdate)
+{
+    auto orderingRules = OrderingRules {
+        { 47, { 53, 13, 61, 29 } },
+        { 97, { 13, 61, 47, 29, 53, 75 } },
+        { 75, { 29, 53, 47, 61, 13 } },
+        { 61, { 13, 53, 29 } },
+        { 29, { 13 } },
+        { 53, { 29, 13 } },
+    };
+
+    EXPECT_TRUE(isValidPageUpdate(Pages { 75, 47, 61, 53, 29 }, orderingRules));
+    EXPECT_TRUE(isValidPageUpdate(Pages { 97, 61, 53, 29, 13 }, orderingRules));
+    EXPECT_TRUE(isValidPageUpdate(Pages { 75, 29, 13 }, orderingRules));
+
+    EXPECT_FALSE(isValidPageUpdate(Pages { 75, 97, 47, 61, 53 }, orderingRules));
+    EXPECT_FALSE(isValidPageUpdate(Pages { 61, 13, 29 }, orderingRules));
+    EXPECT_FALSE(isValidPageUpdate(Pages { 97, 13, 75, 29, 47 }, orderingRules));
+}
+
 TEST(PrintQueueTests, FindMiddlePageNumber)
 {
     EXPECT_EQ(findMiddlePage(std::array<std::size_t, 5> { 75, 47, 61, 53, 29 }), 61);

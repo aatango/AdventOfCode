@@ -3,20 +3,20 @@
 #pragma once
 
 #include <cstddef>
-#include <string>
 #include <span>
+#include <string>
+#include <unordered_map>
 #include <utility>
 #include <vector>
 
 namespace PrintQueue {
 
-using OrderingRule = std::vector<std::size_t>;
+using Pages = std::vector<std::size_t>;
+using PageUpdates = std::vector<Pages>;
+using OrderingRules = std::unordered_map<std::size_t, Pages>;
 
-using PageUpdate = std::vector<std::size_t>;
-using PageUpdates = std::vector<PageUpdate>;
-
-auto parseInput(std::string) noexcept -> std::pair<OrderingRule, PageUpdates>;
-
+auto parseInput(std::string) noexcept -> std::pair<OrderingRules, PageUpdates>;
+auto isValidPageUpdate(std::span<std::size_t const>, OrderingRules const&) noexcept -> bool;
 auto findMiddlePage(std::span<std::size_t const>) noexcept -> std::size_t;
 
 } // namespace PrintQueue
