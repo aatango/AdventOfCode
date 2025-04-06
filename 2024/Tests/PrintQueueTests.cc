@@ -40,6 +40,11 @@ using testing::Pair;
 
 using namespace PrintQueue;
 
+TEST(PrintQueueTests, SolveFirstPuzzle)
+{
+    EXPECT_THAT(solve(std::string { exampleInput }), Pair(143, _));
+}
+
 TEST(PrintQueueTests, ParseOrderingRules)
 {
     EXPECT_THAT(parseInput("\n\n"), Pair(OrderingRules {}, _));
@@ -51,7 +56,7 @@ TEST(PrintQueueTests, ParseOrderingRules)
     EXPECT_THAT(parseInput("47|53\n47|13\n53|13\n\n"),
         Pair(OrderingRules { { 47, { 53, 13 } }, { 53, { 13 } } }, _));
 
-    EXPECT_THAT(parseInput(std::string { exampleInput }),
+    EXPECT_THAT(parseInput(exampleInput),
         Pair(
             OrderingRules {
                 { 47, { 53, 13, 61, 29 } },
@@ -77,7 +82,7 @@ TEST(PrintQueueTests, ParsePageUpdates)
     EXPECT_THAT(parseInput("\n\n75,47,61,53,29\n75,29,13\n"),
         Pair(_, PageUpdates { { 75, 47, 61, 53, 29 }, { 75, 29, 13 } }));
 
-    EXPECT_THAT(parseInput(std::string { exampleInput }),
+    EXPECT_THAT(parseInput(exampleInput),
         Pair(_,
             PageUpdates { { 75, 47, 61, 53, 29 }, { 97, 61, 53, 29, 13 }, { 75, 29, 13 },
                 { 75, 97, 47, 61, 53 }, { 61, 13, 29 }, { 97, 13, 75, 29, 47 } }));

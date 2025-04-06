@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cassert>
+#include <numeric>
 #include <print>
 #include <ranges>
 #include <string>
@@ -55,7 +56,18 @@ auto constexpr parsePageUpdates(std::string_view const input) noexcept -> PrintQ
 namespace PrintQueue {
 
 // NOLINTNEXTLINE(performance-unnecessary-value-param)
-auto parseInput(std::string const input) noexcept -> std::pair<OrderingRules, PageUpdates>
+auto solve(std::string const input) noexcept -> std::pair<std::size_t, std::size_t>
+{
+    auto const [orderingRules, pageUpdates] = parseInput(input);
+
+    auto middlePages = pageUpdates | std::views::filter([&orderingRules](auto&& x) {
+        return isValidPageUpdate(x, orderingRules);
+    }) | std::views::transform(findMiddlePage);
+
+    return { std::accumulate(middlePages.cbegin(), middlePages.cend(), std::size_t { 0 }), 0 };
+}
+
+auto parseInput(std::string_view const input) noexcept -> std::pair<OrderingRules, PageUpdates>
 {
     auto const splitPosition = static_cast<std::ptrdiff_t>(input.find("\n\n"));
 
