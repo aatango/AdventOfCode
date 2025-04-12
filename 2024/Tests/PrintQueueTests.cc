@@ -51,7 +51,7 @@ auto const orderingRules = OrderingRules {
 
 TEST(PrintQueueTests, SolveFirstPuzzle)
 {
-    EXPECT_THAT(solve(std::string { exampleInput }), Pair(143, _));
+    EXPECT_THAT(solve(std::string { exampleInput }), Pair(143, 123));
 }
 
 TEST(PrintQueueTests, ParseOrderingRules)

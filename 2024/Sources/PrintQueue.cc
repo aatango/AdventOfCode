@@ -51,6 +51,13 @@ auto constexpr parsePageUpdates(std::string_view const input) noexcept -> PrintQ
         | std::views::transform(parsePageUpdate) | std::ranges::to<PrintQueue::PageUpdates>();
 }
 
+auto constexpr sumMiddlePages(auto&& update) noexcept -> std::size_t
+{
+    auto middlePages = update | std::views::transform(PrintQueue::findMiddlePage);
+
+    return std::accumulate(middlePages.cbegin(), middlePages.cend(), std::size_t { 0 });
+}
+
 } // namespace
 
 namespace PrintQueue {
@@ -60,11 +67,17 @@ auto solve(std::string const input) noexcept -> std::pair<std::size_t, std::size
 {
     auto const [orderingRules, pageUpdates] = parseInput(input);
 
-    auto middlePages = pageUpdates | std::views::filter([&orderingRules](auto&& x) {
-        return isValidPageUpdate(x, orderingRules);
-    }) | std::views::transform(findMiddlePage);
+    auto validUpdates = pageUpdates | std::views::filter([&orderingRules](auto&& update) {
+        return isValidPageUpdate(update, orderingRules);
+    });
 
-    return { std::accumulate(middlePages.cbegin(), middlePages.cend(), std::size_t { 0 }), 0 };
+    auto correctedUpdates = pageUpdates | std::views::filter([&orderingRules](auto&& update) {
+        return !isValidPageUpdate(update, orderingRules);
+    }) | std::views::transform([&orderingRules](auto&& update) {
+        return sortUpdate(update, orderingRules);
+    });
+
+    return { ::sumMiddlePages(validUpdates), ::sumMiddlePages(correctedUpdates) };
 }
 
 auto parseInput(std::string_view const input) noexcept -> std::pair<OrderingRules, PageUpdates>
