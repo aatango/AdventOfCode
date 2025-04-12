@@ -40,6 +40,15 @@ using testing::Pair;
 
 using namespace PrintQueue;
 
+auto const orderingRules = OrderingRules {
+    { 47, { 53, 13, 61, 29 } },
+    { 97, { 13, 61, 47, 29, 53, 75 } },
+    { 75, { 29, 53, 47, 61, 13 } },
+    { 61, { 13, 53, 29 } },
+    { 29, { 13 } },
+    { 53, { 29, 13 } },
+};
+
 TEST(PrintQueueTests, SolveFirstPuzzle)
 {
     EXPECT_THAT(solve(std::string { exampleInput }), Pair(143, _));
@@ -56,17 +65,7 @@ TEST(PrintQueueTests, ParseOrderingRules)
     EXPECT_THAT(parseInput("47|53\n47|13\n53|13\n\n"),
         Pair(OrderingRules { { 47, { 53, 13 } }, { 53, { 13 } } }, _));
 
-    EXPECT_THAT(parseInput(exampleInput),
-        Pair(
-            OrderingRules {
-                { 47, { 53, 13, 61, 29 } },
-                { 97, { 13, 61, 47, 29, 53, 75 } },
-                { 75, { 29, 53, 47, 61, 13 } },
-                { 61, { 13, 53, 29 } },
-                { 29, { 13 } },
-                { 53, { 29, 13 } },
-            },
-            _));
+    EXPECT_THAT(parseInput(exampleInput), Pair(orderingRules, _));
 }
 
 TEST(PrintQueueTests, ParsePageUpdates)
@@ -90,15 +89,6 @@ TEST(PrintQueueTests, ParsePageUpdates)
 
 TEST(PrintQueueTests, ValidatePageUpdate)
 {
-    auto orderingRules = OrderingRules {
-        { 47, { 53, 13, 61, 29 } },
-        { 97, { 13, 61, 47, 29, 53, 75 } },
-        { 75, { 29, 53, 47, 61, 13 } },
-        { 61, { 13, 53, 29 } },
-        { 29, { 13 } },
-        { 53, { 29, 13 } },
-    };
-
     EXPECT_TRUE(isValidPageUpdate(Pages { 75, 47, 61, 53, 29 }, orderingRules));
     EXPECT_TRUE(isValidPageUpdate(Pages { 97, 61, 53, 29, 13 }, orderingRules));
     EXPECT_TRUE(isValidPageUpdate(Pages { 75, 29, 13 }, orderingRules));
@@ -106,6 +96,26 @@ TEST(PrintQueueTests, ValidatePageUpdate)
     EXPECT_FALSE(isValidPageUpdate(Pages { 75, 97, 47, 61, 53 }, orderingRules));
     EXPECT_FALSE(isValidPageUpdate(Pages { 61, 13, 29 }, orderingRules));
     EXPECT_FALSE(isValidPageUpdate(Pages { 97, 13, 75, 29, 47 }, orderingRules));
+}
+
+TEST(PrintQueueTests, ValidPageUpdatesAreAlreadySorted)
+{
+    auto const firstPages = Pages { 75, 47, 61, 53, 29 };
+    auto const secondPages = Pages { 97, 61, 53, 29, 13 };
+    auto const thirdPages = Pages { 75, 29, 13 };
+
+    for (auto const& pages : { firstPages, secondPages, thirdPages }) {
+        EXPECT_EQ(sortUpdate(pages, orderingRules), pages);
+    }
+}
+
+TEST(PrintQueueTests, SortInvalidPageUpdates)
+{
+    EXPECT_EQ(sortUpdate(Pages { 61, 13, 29 }, orderingRules), (Pages { 61, 29, 13 }));
+    EXPECT_EQ(
+        sortUpdate(Pages { 75, 97, 47, 61, 53 }, orderingRules), (Pages { 97, 75, 47, 61, 53 }));
+    EXPECT_EQ(
+        sortUpdate(Pages { 97, 13, 75, 29, 47 }, orderingRules), (Pages { 97, 75, 47, 29, 13 }));
 }
 
 TEST(PrintQueueTests, FindMiddlePageNumber)
