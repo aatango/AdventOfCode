@@ -1,6 +1,7 @@
 #include "CeresSearch.hh"
 #include "HistorianHysteria.hh"
 #include "MullItOver.hh"
+#include "PrintQueue.hh"
 #include "RedNosedReports.hh"
 
 #include <filesystem>
@@ -33,4 +34,5 @@ int main()
     ::solve(02, "RedNosedReports", RedNosedReports::solve);
     ::solve(03, "MullItOver", MullItOver::solve);
     ::solve(04, "CeresSearch", CeresSearch::solve);
+    ::solve(05, "PrintQueue", PrintQueue::solve);
 }
