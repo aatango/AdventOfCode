@@ -88,6 +88,15 @@ auto isValidPageUpdate(
     return std::ranges::all_of(pages | std::views::adjacent<2>, isValidPage);
 }
 
+auto sortUpdate(Pages pages, OrderingRules const& rules) noexcept -> Pages
+{
+    std::ranges::sort(pages, [&rules](std::size_t lhs, std::size_t rhs) {
+        return rules.contains(lhs) ? std::ranges::contains(rules.at(lhs), rhs) : false;
+    });
+
+    return pages;
+}
+
 auto findMiddlePage(std::span<std::size_t const> const pages) noexcept -> std::size_t
 {
     assert((pages.size() % 2 == 1) && "Can only find middle page of an odd numbered update!");

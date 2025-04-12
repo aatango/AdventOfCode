@@ -19,6 +19,7 @@ using OrderingRules = std::unordered_map<std::size_t, Pages>;
 
 auto parseInput(std::string_view) noexcept -> std::pair<OrderingRules, PageUpdates>;
 auto isValidPageUpdate(std::span<std::size_t const>, OrderingRules const&) noexcept -> bool;
+auto sortUpdate(Pages, OrderingRules const&) noexcept -> Pages;
 auto findMiddlePage(std::span<std::size_t const>) noexcept -> std::size_t;
 
 } // namespace PrintQueue
