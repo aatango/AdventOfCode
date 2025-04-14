@@ -44,12 +44,15 @@ public:
     explicit Map(std::string_view input);
 
     [[nodiscard]] auto guard() const noexcept -> Guard const&;
+    [[nodiscard]] auto obstructions() const noexcept -> Positions const&;
 
 private:
     std::size_t m_height;
     std::size_t m_width;
 
     Guard m_guard;
+
+    Positions m_obstructions;
 };
 
 } // namespace GuardGallivant

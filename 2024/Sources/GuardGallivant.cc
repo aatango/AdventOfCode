@@ -2,6 +2,8 @@
 
 #include <algorithm>
 #include <ostream>
+#include <ranges>
+#include <utility>
 
 namespace {
 
@@ -40,6 +42,18 @@ auto parseGuardPosition(std::string_view const input, std::size_t const mapWidth
     return toPosition(index, mapWidth);
 }
 
+auto parseObstructions(std::string_view const input, std::size_t const mapWidth) noexcept
+    -> GuardGallivant::Positions
+{
+    return input | std::views::enumerate
+        | std::views::filter(
+            [](std::pair<std::size_t, char> const& pair) { return pair.second == '#'; })
+        | std::views::transform([&mapWidth](std::pair<std::size_t, char> const& pair) {
+              return ::toPosition(pair.first, mapWidth);
+          })
+        | std::ranges::to<GuardGallivant::Positions>();
+}
+
 } // namespace
 
 namespace GuardGallivant {
@@ -52,10 +66,12 @@ Map::Map(std::string_view const input)
     , m_guard { .position = ::parseGuardPosition(input, m_width),
         .orientation = ::parseGuardOrientation(input),
         .visitedPositions = {} }
+    , m_obstructions { ::parseObstructions(input, m_width) }
 {
     m_guard.visitedPositions.insert(m_guard.position);
 }
 
 auto Map::guard() const noexcept -> Guard const& { return m_guard; }
+auto Map::obstructions() const noexcept -> Positions const& { return m_obstructions; }
 
 } // namespace GuardGallivant
