@@ -35,6 +35,8 @@ public:
     [[nodiscard]] auto guard() const noexcept -> Guard const&;
     [[nodiscard]] auto obstructions() const noexcept -> std::vector<Position> const&;
 
+    [[nodiscard]] auto isPositionAheadOfGuard(Position const&) const noexcept -> bool;
+
 private:
     std::size_t m_height;
     std::size_t m_width;

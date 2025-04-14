@@ -80,3 +80,22 @@ TEST(GuardGallivantTests, ObstaclePositions)
         (Positions { { .x = 4, .y = 0 }, { .x = 9, .y = 1 }, { .x = 2, .y = 3 }, { .x = 7, .y = 4 },
             { .x = 1, .y = 6 }, { .x = 8, .y = 7 }, { .x = 0, .y = 8 }, { .x = 6, .y = 9 } }));
 }
+
+TEST(GuardGallivantTests, EvaluateIfPositionIsAheadOfGuard)
+{
+    EXPECT_TRUE(Map(".\n^\n").isPositionAheadOfGuard({ .x = 0, .y = 0 }));
+
+    EXPECT_FALSE(Map(".\nv\n").isPositionAheadOfGuard({ .x = 0, .y = 0 }));
+
+    EXPECT_FALSE(Map("#.\n.^\n").isPositionAheadOfGuard({ .x = 0, .y = 0 }));
+    EXPECT_FALSE(Map(">.\n.#\n").isPositionAheadOfGuard({ .x = 1, .y = 1 }));
+    EXPECT_FALSE(Map(".v...\n...#.\n").isPositionAheadOfGuard({ .x = 3, .y = 1 }));
+    EXPECT_FALSE(Map("...\n.#.\n..<\n...\n").isPositionAheadOfGuard({ .x = 1, .y = 1 }));
+
+    EXPECT_TRUE(Map("#\n^\n").isPositionAheadOfGuard({ .x = 0, .y = 0 }));
+    EXPECT_TRUE(Map(">.#\n").isPositionAheadOfGuard({ .x = 2, .y = 0 }));
+    EXPECT_TRUE(Map("v\n.\n#\n.\n").isPositionAheadOfGuard({ .x = 0, .y = 2 }));
+    EXPECT_TRUE(Map(".#..<\n").isPositionAheadOfGuard({ .x = 1, .y = 0 }));
+
+    EXPECT_TRUE(Map(exampleInput).isPositionAheadOfGuard({ .x = 4, .y = 0 }));
+}
