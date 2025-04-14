@@ -1,0 +1,55 @@
+#pragma once // Advent of Code, 2024, day 06
+
+#include <cstddef>
+#include <cstdint>
+#include <iosfwd>
+#include <string_view>
+#include <unordered_set>
+namespace GuardGallivant {
+
+struct Position {
+    std::size_t x;
+    std::size_t y;
+
+private:
+    friend auto operator==(Position, Position) noexcept -> bool = default;
+    friend void PrintTo(Position const&, std::ostream*);
+};
+
+auto taxicabDistance(Position const&, Position const&) noexcept -> std::size_t;
+
+using Positions = std::unordered_set<Position>;
+
+} // namespace GuardGallivant
+
+template <> struct std::hash<GuardGallivant::Position> {
+    auto operator()(GuardGallivant::Position const& p) const -> std::size_t
+    {
+        return std::hash<std::size_t>()(p.x) ^ std::hash<std::size_t>()(p.y << 1U);
+    }
+};
+
+namespace GuardGallivant {
+
+enum class Orientation : std::uint8_t { Up, Right, Down, Left };
+
+struct Guard {
+    Position position;
+    Orientation orientation;
+    Positions visitedPositions;
+};
+
+class Map {
+public:
+    explicit Map(std::string_view input);
+
+    [[nodiscard]] auto guard() const noexcept -> Guard const&;
+
+private:
+    std::size_t m_height;
+    std::size_t m_width;
+
+    Guard m_guard;
+};
+
+} // namespace GuardGallivant

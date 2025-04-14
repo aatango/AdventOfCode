@@ -6,6 +6,7 @@ testSources = [
   'RedNosedReportsTests.cc',
   'MullItOverTests.cc',
   'CeresSearchTests.cc',
+  'GuardGallivantTests.cc',
   'PrintQueueTests.cc',
   'BridgeRepairTests.cc',
   'ResonantCollinearityTests.cc',

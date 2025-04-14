@@ -3,6 +3,7 @@ library_sources = [
   'RedNosedReports.cc',
   'MullItOver.cc',
   'CeresSearch.cc',
+  'GuardGallivant.cc',
   'PrintQueue.cc',
   'BridgeRepair.cc',
   'ResonantCollinearity.cc',
