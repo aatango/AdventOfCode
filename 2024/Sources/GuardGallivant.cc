@@ -1,6 +1,8 @@
 #include "GuardGallivant.hh"
 
 #include <algorithm>
+#include <cmath>
+#include <cstddef>
 #include <ostream>
 #include <ranges>
 #include <utility>
@@ -57,6 +59,12 @@ auto parseObstructions(std::string_view const input, std::size_t const mapWidth)
 namespace GuardGallivant {
 
 void PrintTo(Position const& pos, std::ostream* os) { *os << '(' << pos.x << ',' << pos.y << ')'; }
+
+auto taxicabDistance(Position const& lhs, Position const& rhs) noexcept -> std::size_t
+{
+    return std::abs(static_cast<std::ptrdiff_t>(lhs.x) - static_cast<std::ptrdiff_t>(rhs.x))
+        + std::abs(static_cast<std::ptrdiff_t>(lhs.y) - static_cast<std::ptrdiff_t>(rhs.y));
+}
 
 Map::Map(std::string_view const input)
     : m_height { static_cast<std::size_t>(std::ranges::count(input, '\n')) }

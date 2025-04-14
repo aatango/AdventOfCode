@@ -16,6 +16,8 @@ struct Position {
     friend void PrintTo(Position const&, std::ostream*);
 };
 
+auto taxicabDistance(Position const&, Position const&) noexcept -> std::size_t;
+
 using Positions = std::vector<Position>;
 
 enum class Orientation : std::uint8_t { Up, Right, Down, Left };

@@ -15,6 +15,27 @@ std::string_view constexpr exampleInput = "....#.....\n"
 
 using namespace GuardGallivant;
 
+TEST(GuardGallivantTests, TaxicabDistanceBetweenTwoPositions)
+{
+    // Same position
+    EXPECT_EQ(taxicabDistance({ .x = 0, .y = 0 }, { .x = 0, .y = 0 }), 0);
+    EXPECT_EQ(taxicabDistance({ .x = 1, .y = 2 }, { .x = 1, .y = 2 }), 0);
+
+    // Horizontal distance
+    EXPECT_EQ(taxicabDistance({ .x = 1, .y = 2 }, { .x = 4, .y = 2 }), 3);
+    EXPECT_EQ(taxicabDistance({ .x = 6, .y = 2 }, { .x = 1, .y = 2 }), 5);
+
+    // Vertical distance
+    EXPECT_EQ(taxicabDistance({ .x = 1, .y = 2 }, { .x = 1, .y = 6 }), 4);
+    EXPECT_EQ(taxicabDistance({ .x = 1, .y = 4 }, { .x = 1, .y = 2 }), 2);
+
+    // Diagonal distance
+    EXPECT_EQ(taxicabDistance({ .x = 1, .y = 2 }, { .x = 4, .y = 5 }), 6);
+    EXPECT_EQ(taxicabDistance({ .x = 1, .y = 6 }, { .x = 4, .y = 2 }), 7);
+    EXPECT_EQ(taxicabDistance({ .x = 4, .y = 2 }, { .x = 1, .y = 7 }), 8);
+    EXPECT_EQ(taxicabDistance({ .x = 4, .y = 6 }, { .x = 1, .y = 0 }), 9);
+}
+
 TEST(GuardGallivantTests, GuardInitialOrientation)
 {
     EXPECT_EQ(Map("^\n").guard().orientation, Orientation::Up);
