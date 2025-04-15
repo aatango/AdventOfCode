@@ -5,7 +5,6 @@
 #include <iosfwd>
 #include <string_view>
 #include <unordered_set>
-#include <vector>
 
 namespace GuardGallivant {
 
@@ -45,7 +44,7 @@ public:
     explicit Map(std::string_view input);
 
     [[nodiscard]] auto guard() const noexcept -> Guard const&;
-    [[nodiscard]] auto obstructions() const noexcept -> std::vector<Position> const&;
+    [[nodiscard]] auto obstructions() const noexcept -> Positions const&;
 
     [[nodiscard]] auto isPositionAheadOfGuard(Position const&) const noexcept -> bool;
 

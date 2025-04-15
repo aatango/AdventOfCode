@@ -77,7 +77,7 @@ Map::Map(std::string_view const input)
 }
 
 auto Map::guard() const noexcept -> Guard const& { return m_guard; }
-auto Map::obstructions() const noexcept -> std::vector<Position> const& { return m_obstructions; }
+auto Map::obstructions() const noexcept -> Positions const& { return m_obstructions; }
 
 auto Map::isPositionAheadOfGuard(Position const& pos) const noexcept -> bool
 {
