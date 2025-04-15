@@ -64,7 +64,7 @@ TEST(GuardGallivantTests, GuardInitialPosition)
     EXPECT_EQ(Map(exampleInput).guard().position, (Position { .x = 4, .y = 6 }));
 }
 
-TEST(GuardGallivantTests, ObstaclePositions)
+TEST(GuardGallivantTests, PositionsOfObstructions)
 {
     EXPECT_EQ(Map("^.\n").obstructions(), Positions {});
 
