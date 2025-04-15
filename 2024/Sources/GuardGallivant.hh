@@ -19,8 +19,6 @@ struct Position {
 
 auto taxicabDistance(Position const&, Position const&) noexcept -> std::size_t;
 
-using Positions = std::vector<Position>;
-
 } // namespace GuardGallivant
 
 template <> struct std::hash<GuardGallivant::Position> {
@@ -32,12 +30,14 @@ template <> struct std::hash<GuardGallivant::Position> {
 
 namespace GuardGallivant {
 
+using Positions = std::unordered_set<Position>;
+
 enum class Orientation : std::uint8_t { Up, Right, Down, Left };
 
 struct Guard {
     Position position;
     Orientation orientation;
-    std::unordered_set<Position> visitedPositions;
+    Positions visitedPositions;
 };
 
 class Map {
