@@ -81,7 +81,7 @@ TEST(GuardGallivantTests, PositionsOfObstructions)
             { .x = 1, .y = 6 }, { .x = 8, .y = 7 }, { .x = 0, .y = 8 }, { .x = 6, .y = 9 } }));
 }
 
-TEST(GuardGallivantTests, EvaluateIfPositionIsAheadOfGuard)
+TEST(GuardGallivantTests, IsPositionAheadOfGuard)
 {
     EXPECT_TRUE(Map(".\n^\n").isPositionAheadOfGuard({ .x = 0, .y = 0 }));
 
