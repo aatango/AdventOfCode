@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <iosfwd>
 #include <string_view>
+#include <unordered_set>
 #include <vector>
 
 namespace GuardGallivant {
@@ -20,12 +21,23 @@ auto taxicabDistance(Position const&, Position const&) noexcept -> std::size_t;
 
 using Positions = std::vector<Position>;
 
+} // namespace GuardGallivant
+
+template <> struct std::hash<GuardGallivant::Position> {
+    auto operator()(GuardGallivant::Position const& p) const -> std::size_t
+    {
+        return std::hash<std::size_t>()(p.x) ^ (std::hash<std::size_t>()(p.y) << 1U);
+    }
+};
+
+namespace GuardGallivant {
+
 enum class Orientation : std::uint8_t { Up, Right, Down, Left };
 
 struct Guard {
     Position position;
     Orientation orientation;
-    std::size_t walkedDistance;
+    std::unordered_set<Position> visitedPositions;
 };
 
 class Map {

@@ -71,7 +71,7 @@ Map::Map(std::string_view const input)
     , m_width { static_cast<std::size_t>(std::ranges::find(input, '\n') - input.begin()) }
     , m_guard { .position = ::parseGuardPosition(input, m_width),
         .orientation = ::parseGuardOrientation(input),
-        .walkedDistance = 0 }
+        .visitedPositions = { ::parseGuardPosition(input, m_width) } }
     , m_obstructions { ::parseObstructions(input, m_width) }
 {
 }
