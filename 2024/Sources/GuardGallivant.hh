@@ -7,6 +7,8 @@
 #include <unordered_set>
 namespace GuardGallivant {
 
+auto solve(std::string) noexcept -> std::pair<std::size_t, std::size_t>;
+
 struct Position {
     std::size_t x;
     std::size_t y;
@@ -45,6 +47,8 @@ public:
 
     [[nodiscard]] auto guard() const noexcept -> Guard const&;
     [[nodiscard]] auto obstructions() const noexcept -> Positions const&;
+
+    auto completePatrol() noexcept -> bool;
 
 private:
     std::size_t m_height;

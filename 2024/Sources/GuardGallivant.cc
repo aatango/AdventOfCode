@@ -58,6 +58,15 @@ auto parseObstructions(std::string_view const input, std::size_t const mapWidth)
 
 namespace GuardGallivant {
 
+// NOLINTNEXTLINE(performance-unnecessary-value-param)
+auto solve(std::string const input) noexcept -> std::pair<std::size_t, std::size_t>
+{
+    auto map = Map { input };
+    map.completePatrol();
+
+    return { map.guard().visitedPositions.size(), 0 };
+}
+
 void PrintTo(Position const& pos, std::ostream* os) { *os << '(' << pos.x << ',' << pos.y << ')'; }
 
 Map::Map(std::string_view const input)
@@ -73,5 +82,78 @@ Map::Map(std::string_view const input)
 
 auto Map::guard() const noexcept -> Guard const& { return m_guard; }
 auto Map::obstructions() const noexcept -> Positions const& { return m_obstructions; }
+
+auto Map::completePatrol() noexcept -> bool
+{
+    auto const isEndOfPatrol = [this]() -> bool {
+        switch (m_guard.orientation) {
+        case Orientation::Up:
+            return m_guard.position.y == 0;
+        case Orientation::Right:
+            return m_guard.position.x == (m_width - 1);
+        case Orientation::Down:
+            return m_guard.position.y == (m_height - 1);
+        case Orientation::Left:
+        default:
+            return m_guard.position.x == 0;
+        }
+    };
+
+    auto const isObstructionAhead = [this]() -> bool {
+        auto const positionAhead = [this]() -> Position {
+            switch (m_guard.orientation) {
+            case Orientation::Up:
+                return { .x = m_guard.position.x, .y = m_guard.position.y - 1 };
+            case Orientation::Right:
+                return { .x = m_guard.position.x + 1, .y = m_guard.position.y };
+            case Orientation::Down:
+                return { .x = m_guard.position.x, .y = m_guard.position.y + 1 };
+            case Orientation::Left:
+            default:
+                return { .x = m_guard.position.x - 1, .y = m_guard.position.y };
+            }
+        }();
+
+        return m_obstructions.contains(positionAhead);
+    };
+
+    while (!isEndOfPatrol()) {
+        if (isObstructionAhead()) {
+            m_guard.orientation = [this]() -> Orientation {
+                switch (m_guard.orientation) {
+                case Orientation::Up:
+                    return Orientation::Right;
+                case Orientation::Right:
+                    return Orientation::Down;
+                case Orientation::Down:
+                    return Orientation::Left;
+                case Orientation::Left:
+                default:
+                    return Orientation::Up;
+                }
+            }();
+            continue;
+        }
+
+        switch (m_guard.orientation) {
+        case Orientation::Up:
+            --m_guard.position.y;
+            break;
+        case Orientation::Right:
+            ++m_guard.position.x;
+            break;
+        case Orientation::Down:
+            ++m_guard.position.y;
+            break;
+        case Orientation::Left:
+        default:
+            --m_guard.position.x;
+        }
+
+        m_guard.visitedPositions.insert(m_guard.position);
+    }
+
+    return true;
+}
 
 } // namespace GuardGallivant

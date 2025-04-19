@@ -1,6 +1,12 @@
 #include "GuardGallivant.hh"
 
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
+
+#include <cstddef>
+#include <string>
+#include <string_view>
+#include <utility>
 
 std::string_view constexpr exampleInput = "....#.....\n"
                                           ".........#\n"
@@ -13,7 +19,15 @@ std::string_view constexpr exampleInput = "....#.....\n"
                                           "#.........\n"
                                           "......#...\n";
 
+using testing::_;
+using testing::Pair;
+
 using namespace GuardGallivant;
+
+TEST(GuardGallivantTests, SolveFirstPuzzle)
+{
+    EXPECT_THAT(solve(std::string { exampleInput }), Pair(41, _));
+}
 
 TEST(GuardGallivantTests, GuardInitialOrientation)
 {
@@ -59,3 +73,25 @@ TEST(GuardGallivantTests, ObstaclePositions)
         (Positions { { .x = 4, .y = 0 }, { .x = 9, .y = 1 }, { .x = 2, .y = 3 }, { .x = 7, .y = 4 },
             { .x = 1, .y = 6 }, { .x = 8, .y = 7 }, { .x = 0, .y = 8 }, { .x = 6, .y = 9 } }));
 }
+
+class GuardGallivantPatrollingTests
+    : public testing::TestWithParam<std::pair<std::string, std::size_t>> { };
+
+TEST_P(GuardGallivantPatrollingTests, PatrolledDistanceOnceGuardHasLeftTheMap)
+{
+    auto const [inputMap, expectedWalkedDistance] = GetParam();
+
+    auto map = Map(inputMap);
+
+    map.completePatrol();
+
+    EXPECT_EQ(map.guard().visitedPositions.size(), expectedWalkedDistance);
+}
+
+INSTANTIATE_TEST_CASE_P(TestMaps, GuardGallivantPatrollingTests,
+    testing::Values(std::pair { "^\n", 1 }, std::pair { ">.\n", 2 },
+        std::pair { ".v\n..\n.#\n..\n", 3 }, std::pair { "...\n.#.\n...\n#.<\n", 4 },
+        std::pair { ".#..\n...#\n....\n.^#.\n", 6 }));
+
+INSTANTIATE_TEST_CASE_P(
+    ExampleMap, GuardGallivantPatrollingTests, testing::Values(std::pair { exampleInput, 41 }));
