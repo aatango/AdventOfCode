@@ -95,4 +95,71 @@ auto Map::isPositionAheadOfGuard(Position const& pos) const noexcept -> bool
     }
 }
 
+void Map::patrol() noexcept
+{
+    while (true) {
+        auto guardAboutToExitMap = [this] {
+            switch (m_guard.orientation) {
+            case Orientation::Up:
+                return m_guard.position.y == 0;
+            case Orientation::Right:
+                return m_guard.position.x == (m_width - 1);
+            case Orientation::Down:
+                return m_guard.position.y == (m_height - 1);
+            case Orientation::Left:
+                return m_guard.position.x == 0;
+            default:
+                return false;
+            }
+        }();
+
+        if (guardAboutToExitMap)
+            break;
+
+        [this] {
+            switch (m_guard.orientation) {
+            case Orientation::Up:
+                --m_guard.position.y;
+                return;
+            case Orientation::Right:
+                ++m_guard.position.x;
+                return;
+            case Orientation::Down:
+                ++m_guard.position.y;
+                return;
+            case Orientation::Left:
+            default:
+                --m_guard.position.x;
+            }
+        }();
+
+        m_guard.visitedPositions.insert(m_guard.position);
+
+        auto obstructionsAhead = m_obstructions
+            | std::views::filter([this](Position const& p) { return isPositionAheadOfGuard(p); });
+
+        if (obstructionsAhead.empty())
+            continue;
+
+        auto const closestObstruction = std::ranges::min(obstructionsAhead, {},
+            [this](Position const& p) { return taxicabDistance(p, m_guard.position); });
+
+        if (taxicabDistance(m_guard.position, closestObstruction) == 1) {
+            m_guard.orientation = [this] {
+                switch (m_guard.orientation) {
+                case Orientation::Up:
+                    return Orientation::Right;
+                case Orientation::Right:
+                    return Orientation::Down;
+                case Orientation::Down:
+                    return Orientation::Left;
+                case Orientation::Left:
+                default:
+                    return Orientation::Up;
+                }
+            }();
+        }
+    }
+}
+
 } // namespace GuardGallivant

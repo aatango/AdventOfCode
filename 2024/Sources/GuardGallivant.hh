@@ -48,6 +48,8 @@ public:
 
     [[nodiscard]] auto isPositionAheadOfGuard(Position const&) const noexcept -> bool;
 
+    void patrol() noexcept;
+
 private:
     std::size_t m_height;
     std::size_t m_width;

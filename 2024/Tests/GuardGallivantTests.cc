@@ -2,6 +2,11 @@
 
 #include <gtest/gtest.h>
 
+#include <cstddef>
+#include <string>
+#include <string_view>
+#include <utility>
+
 std::string_view constexpr exampleInput = "....#.....\n"
                                           ".........#\n"
                                           "..........\n"
@@ -99,3 +104,25 @@ TEST(GuardGallivantTests, IsPositionAheadOfGuard)
 
     EXPECT_TRUE(Map(exampleInput).isPositionAheadOfGuard({ .x = 4, .y = 0 }));
 }
+
+class GuardGallivantPatrollingTests
+    : public testing::TestWithParam<std::pair<std::string, std::size_t>> { };
+
+TEST_P(GuardGallivantPatrollingTests, PatrolledDistanceOnceGuardHasLeftTheMap)
+{
+    auto const [inputMap, expectedWalkedDistance] = GetParam();
+
+    auto map = Map(inputMap);
+
+    map.patrol();
+
+    EXPECT_EQ(map.guard().visitedPositions.size(), expectedWalkedDistance);
+}
+
+INSTANTIATE_TEST_CASE_P(TestMaps, GuardGallivantPatrollingTests,
+    testing::Values(std::pair { "^\n", 1 }, std::pair { ">.\n", 2 },
+        std::pair { ".v\n..\n.#\n..\n", 3 }, std::pair { "...\n.#.\n...\n#.<\n", 4 },
+        std::pair { ".#..\n...#\n....\n.^#.\n", 6 }));
+
+INSTANTIATE_TEST_CASE_P(
+    ExampleMap, GuardGallivantPatrollingTests, testing::Values(std::pair { exampleInput, 41 }));
