@@ -1,5 +1,6 @@
 #include "BridgeRepair.hh"
 
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
 #include <string_view>
@@ -14,7 +15,15 @@ std::string_view constexpr exampleInput = "190: 10 19\n"
                                           "21037: 9 7 18 13\n"
                                           "292: 11 6 16 20\n";
 
+using testing::_;
+using testing::Pair;
+
 using namespace BridgeRepair;
+
+TEST(BridgeRepairTests, solveFirstPuzzle)
+{
+    EXPECT_THAT(solve(std::string { exampleInput }), Pair(3749, _));
+}
 
 TEST(BridgeRepairTests, ParseInput)
 {
