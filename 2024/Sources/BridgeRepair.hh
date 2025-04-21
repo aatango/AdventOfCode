@@ -11,5 +11,6 @@ using Equation = std::pair<std::size_t, std::vector<std::size_t>>; // Result, an
 using Equations = std::vector<Equation>;
 
 auto parseInput(std::string_view) noexcept -> Equations;
+auto isValidEquation(Equation const&) noexcept -> bool;
 
 } // namespace BridgeRepair

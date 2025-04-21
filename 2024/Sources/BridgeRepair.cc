@@ -31,4 +31,27 @@ auto parseInput(std::string_view const input) noexcept -> Equations
     return equations;
 }
 
+auto isValidEquation(Equation const& equation) noexcept -> bool
+{
+    auto const& [result, operands] = equation;
+
+    // NOLINTNEXTLINE(misc-no-recursion)
+    return [](this auto const& itself, auto const& operands, std::size_t remainder) -> bool {
+        if (operands.size() == 1)
+            return operands.front() == remainder;
+
+        if (remainder < operands.front())
+            // Cannot divide or subtract the operand from the remainder, and get a natural number;
+            return false;
+
+        auto const operand = operands.front();
+        auto const remainingOperands
+            = operands | std::views::drop(1) | std::ranges::to<std::vector<std::size_t>>();
+
+        return remainder % operand == 0 && itself(remainingOperands, remainder / operand)
+            ? true
+            : itself(remainingOperands, remainder - operand);
+    }(operands | std::views::reverse, result);
+}
+
 } // namespace BridgeRepair
