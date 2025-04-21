@@ -25,3 +25,17 @@ TEST(BridgeRepairTests, ParseInput)
 
     EXPECT_EQ(parseInput(exampleInput), exampleEquations);
 }
+
+TEST(BridgeRepairTests, ValidateEquations)
+{
+    EXPECT_TRUE(isValidEquation(Equation { 190, { 10, 19 } }));
+    EXPECT_TRUE(isValidEquation(Equation { 3267, { 81, 40, 27 } }));
+    EXPECT_TRUE(isValidEquation(Equation { 292, { 11, 6, 16, 20 } }));
+
+    EXPECT_FALSE(isValidEquation(Equation { 83, { 17, 5 } }));
+    EXPECT_FALSE(isValidEquation(Equation { 156, { 15, 6 } }));
+    EXPECT_FALSE(isValidEquation(Equation { 7290, { 6, 8, 6, 15 } }));
+    EXPECT_FALSE(isValidEquation(Equation { 161011, { 16, 10, 13 } }));
+    EXPECT_FALSE(isValidEquation(Equation { 192, { 17, 8, 14 } }));
+    EXPECT_FALSE(isValidEquation(Equation { 21037, { 9, 7, 18, 13 } }));
+}
