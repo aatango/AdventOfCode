@@ -1,9 +1,22 @@
 #include "BridgeRepair.hh"
 
 #include <algorithm>
+#include <numeric>
 #include <ranges>
 
 namespace BridgeRepair {
+
+// NOLINTNEXTLINE(performance-unnecessary-value-param)
+auto solve(std::string const input) noexcept -> std::pair<std::size_t, std::size_t>
+{
+    auto const equations = parseInput(input);
+
+    auto validResults = equations
+        | std::views::filter([](Equation const& e) { return isValidEquation(e); })
+        | std::views::keys;
+
+    return { std::accumulate(validResults.cbegin(), validResults.cend(), 0ULL), 0 };
+}
 
 auto parseInput(std::string_view const input) noexcept -> Equations
 {
