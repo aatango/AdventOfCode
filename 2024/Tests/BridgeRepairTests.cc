@@ -15,14 +15,13 @@ std::string_view constexpr exampleInput = "190: 10 19\n"
                                           "21037: 9 7 18 13\n"
                                           "292: 11 6 16 20\n";
 
-using testing::_;
 using testing::Pair;
 
 using namespace BridgeRepair;
 
 TEST(BridgeRepairTests, solveFirstPuzzle)
 {
-    EXPECT_THAT(solve(std::string { exampleInput }), Pair(3749, _));
+    EXPECT_THAT(solve(std::string { exampleInput }), Pair(3749, 11387));
 }
 
 TEST(BridgeRepairTests, ParseInput)
@@ -47,4 +46,11 @@ TEST(BridgeRepairTests, ValidateEquations)
     EXPECT_FALSE(isValidEquation(Equation { 161011, { 16, 10, 13 } }));
     EXPECT_FALSE(isValidEquation(Equation { 192, { 17, 8, 14 } }));
     EXPECT_FALSE(isValidEquation(Equation { 21037, { 9, 7, 18, 13 } }));
+}
+
+TEST(BridgeRepairTests, ValidateEquationsWithConcatenation)
+{
+    EXPECT_TRUE(isValidEquation(Equation { 156, { 15, 6 } }, true));
+    EXPECT_TRUE(isValidEquation(Equation { 7290, { 6, 8, 6, 15 } }, true));
+    EXPECT_TRUE(isValidEquation(Equation { 192, { 17, 8, 14 } }, true));
 }

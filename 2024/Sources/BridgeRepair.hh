@@ -14,6 +14,6 @@ using Equations = std::vector<Equation>;
 auto solve(std::string) noexcept -> std::pair<std::size_t, std::size_t>;
 
 auto parseInput(std::string_view) noexcept -> Equations;
-auto isValidEquation(Equation const&) noexcept -> bool;
+auto isValidEquation(Equation const&, bool canConcatenate = false) noexcept -> bool;
 
 } // namespace BridgeRepair
