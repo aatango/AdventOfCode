@@ -1,8 +1,23 @@
 #include "BridgeRepair.hh"
 
 #include <algorithm>
+#include <cmath>
 #include <numeric>
 #include <ranges>
+#include <string>
+
+namespace {
+
+auto solve(BridgeRepair::Equations const& equations, bool const concat = false) -> std::size_t
+{
+    auto validResults = equations | std::views::filter([concat](BridgeRepair::Equation const& e) {
+        return BridgeRepair::isValidEquation(e, concat);
+    }) | std::views::keys;
+
+    return std::accumulate(validResults.cbegin(), validResults.cend(), 0ULL);
+}
+
+} // namespace
 
 namespace BridgeRepair {
 
@@ -11,11 +26,7 @@ auto solve(std::string const input) noexcept -> std::pair<std::size_t, std::size
 {
     auto const equations = parseInput(input);
 
-    auto validResults = equations
-        | std::views::filter([](Equation const& e) { return isValidEquation(e); })
-        | std::views::keys;
-
-    return { std::accumulate(validResults.cbegin(), validResults.cend(), 0ULL), 0 };
+    return { ::solve(equations), ::solve(equations, true) };
 }
 
 auto parseInput(std::string_view const input) noexcept -> Equations
@@ -44,12 +55,13 @@ auto parseInput(std::string_view const input) noexcept -> Equations
     return equations;
 }
 
-auto isValidEquation(Equation const& equation) noexcept -> bool
+auto isValidEquation(Equation const& equation, bool const canConcatenate) noexcept -> bool
 {
     auto const& [result, operands] = equation;
 
     // NOLINTNEXTLINE(misc-no-recursion)
-    return [](this auto const& itself, auto const& operands, std::size_t remainder) -> bool {
+    return [](this auto const& itself, auto const& operands, std::size_t remainder,
+               bool const concat) -> bool {
         if (operands.size() == 1)
             return operands.front() == remainder;
 
@@ -61,10 +73,19 @@ auto isValidEquation(Equation const& equation) noexcept -> bool
         auto const remainingOperands
             = operands | std::views::drop(1) | std::ranges::to<std::vector<std::size_t>>();
 
-        return remainder % operand == 0 && itself(remainingOperands, remainder / operand)
+        if (concat) {
+            auto const numberOfDigits = static_cast<std::size_t>(std::log10(operand) + 1);
+            auto const divider = static_cast<std::size_t>(std::pow(10, numberOfDigits));
+
+            if ((remainder % divider == operand)
+                && itself(remainingOperands, remainder / divider, concat))
+                return true;
+        }
+
+        return remainder % operand == 0 && itself(remainingOperands, remainder / operand, concat)
             ? true
-            : itself(remainingOperands, remainder - operand);
-    }(operands | std::views::reverse, result);
+            : itself(remainingOperands, remainder - operand, concat);
+    }(operands | std::views::reverse, result, canConcatenate);
 }
 
 } // namespace BridgeRepair
