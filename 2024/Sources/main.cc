@@ -1,3 +1,4 @@
+#include "BridgeRepair.hh"
 #include "CeresSearch.hh"
 #include "HistorianHysteria.hh"
 #include "MullItOver.hh"
@@ -42,4 +43,5 @@ int main()
     ::solve(03, "MullItOver", MullItOver::solve);
     ::solve(04, "CeresSearch", CeresSearch::solve);
     ::solve(05, "PrintQueue", PrintQueue::solve);
+    ::solve(07, "BridgeRepair", BridgeRepair::solve);
 }
