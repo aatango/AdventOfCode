@@ -15,4 +15,13 @@ auto createAntinodes(Point const lhs, Point const rhs) noexcept -> std::pair<Poi
         Point { .x = rhs.x + magnitudeX, .y = rhs.y + magnitudeY } };
 }
 
+auto isPointInsideGrid(Point const point, Grid const grid) noexcept -> bool
+{
+    if (point.x < 0 || point.y < 0)
+        return false;
+
+    return static_cast<std::size_t>(point.x) < grid.width
+        && static_cast<std::size_t>(point.y) < grid.height;
+}
+
 } // namespace ResonantCollinearity
