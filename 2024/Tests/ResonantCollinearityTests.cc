@@ -3,9 +3,35 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+#include <string_view>
+
+std::string_view constexpr exampleInput = "............\n"
+                                          "........0...\n"
+                                          ".....0......\n"
+                                          ".......0....\n"
+                                          "....0.......\n"
+                                          "......A.....\n"
+                                          "............\n"
+                                          "............\n"
+                                          "........A...\n"
+                                          ".........A..\n"
+                                          "............\n"
+                                          "............\n";
+
 using testing::Pair;
 
 using namespace ResonantCollinearity;
+
+TEST(ResonantCollinearityTests, parseInput)
+{
+    auto constexpr expectedGrid = Grid { .width = 12, .height = 12 };
+    auto const expectedAntennas = Antennas {
+        { '0', { { .x = 8, .y = 1 }, { .x = 5, .y = 2 }, { .x = 7, .y = 3 }, { .x = 4, .y = 4 } } },
+        { 'A', { { .x = 6, .y = 5 }, { .x = 8, .y = 8 }, { .x = 9, .y = 9 } } }
+    };
+
+    EXPECT_THAT(parseInput(exampleInput), Pair(expectedGrid, expectedAntennas));
+}
 
 TEST(ResonantCollinearityTests, createAntinodesGivenTwoPoints)
 {
