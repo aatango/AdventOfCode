@@ -82,4 +82,22 @@ auto parseInput(std::string_view const input) noexcept -> std::pair<Grid, Antenn
     return { Grid { .width = width, .height = height }, mappedAntennas };
 }
 
+// NOLINTNEXTLINE(performance-unnecessary-value-param)
+auto solve(std::string const input) noexcept -> std::pair<std::size_t, std::size_t>
+{
+    auto const [grid, antennas] = parseInput(input);
+
+    auto antinodes = antennas | std::views::values
+        | std::views::transform([](auto&& antennas) { return createAntinodes(antennas); })
+        | std::views::join
+        | std::views::filter([&grid](Point const node) { return isPointInsideGrid(node, grid); });
+
+    PointSet antinodeSet;
+    for (auto pt : antinodes) {
+        antinodeSet.insert(pt);
+    }
+
+    return { antinodeSet.size(), 0 };
+}
+
 } // namespace ResonantCollinearity

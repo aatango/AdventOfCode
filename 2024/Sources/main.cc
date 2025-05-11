@@ -4,6 +4,7 @@
 #include "MullItOver.hh"
 #include "PrintQueue.hh"
 #include "RedNosedReports.hh"
+#include "ResonantCollinearity.hh"
 
 #include <chrono>
 #include <filesystem>
@@ -44,4 +45,5 @@ int main()
     ::solve(04, "CeresSearch", CeresSearch::solve);
     ::solve(05, "PrintQueue", PrintQueue::solve);
     ::solve(07, "BridgeRepair", BridgeRepair::solve);
+    ::solve(8, "ResonantCollinearity", ResonantCollinearity::solve);
 }

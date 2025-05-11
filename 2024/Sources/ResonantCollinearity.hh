@@ -10,6 +10,8 @@
 
 namespace ResonantCollinearity {
 
+auto solve(std::string) noexcept -> std::pair<std::size_t, std::size_t>;
+
 struct Point {
     int x;
     int y;
