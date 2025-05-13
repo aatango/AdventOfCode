@@ -100,4 +100,56 @@ auto solve(std::string const input) noexcept -> std::pair<std::size_t, std::size
     return { antinodeSet.size(), 0 };
 }
 
+auto findPointsInGridAlongLine(Grid const grid, Point const pointA, Point const pointB) noexcept
+    -> std::vector<Point>
+{
+    std::vector<Point> points;
+    points.push_back(pointA);
+    points.push_back(pointB);
+
+    auto usedPointA = pointA;
+    auto usedPointB = pointB;
+    while (isPointInsideGrid(usedPointA, grid)) {
+        auto const [newPointA, _] = createAntinodes(usedPointA, usedPointB);
+
+        points.push_back(newPointA);
+
+        usedPointB = usedPointA;
+        usedPointA = newPointA;
+    }
+
+    usedPointA = pointA;
+    usedPointB = pointB;
+    while (isPointInsideGrid(usedPointB, grid)) {
+        auto const [_, newPointB] = createAntinodes(usedPointA, usedPointB);
+
+        points.push_back(newPointB);
+
+        usedPointA = usedPointB;
+        usedPointB = newPointB;
+    }
+
+    return points;
+}
+
+auto findPointsInGridAlongLines(Grid const grid, std::span<Point const> const points) noexcept
+    -> PointSet
+{
+    auto pointPairs = std::views::cartesian_product(points, points)
+        | std::views::filter(
+            [](std::pair<Point, Point> const& points) { return points.first != points.second; });
+
+    PointSet antinodes;
+
+    for (auto const [firstPoint, secondPoint] : pointPairs) {
+        for (auto const& node : findPointsInGridAlongLine(grid, firstPoint, secondPoint)
+                | std::views::filter(
+                    [&grid](Point const node) { return isPointInsideGrid(node, grid); })) {
+            antinodes.insert(node);
+        }
+    }
+
+    return antinodes;
+}
+
 } // namespace ResonantCollinearity

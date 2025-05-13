@@ -43,4 +43,7 @@ auto createAntinodes(std::span<Point const>) noexcept -> PointSet;
 
 auto isPointInsideGrid(Point, Grid) noexcept -> bool;
 
+auto findPointsInGridAlongLine(Grid, Point, Point) noexcept -> std::vector<Point>;
+auto findPointsInGridAlongLines(Grid, std::span<Point const>) noexcept -> PointSet;
+
 } // namespace ResonantCollinearity

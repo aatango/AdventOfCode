@@ -115,3 +115,17 @@ TEST(ResonantCollinearityTests, arePointsInsideGrid)
     EXPECT_FALSE(isPointInsideGrid({ .x = 0, .y = 2 }, grid));
     EXPECT_FALSE(isPointInsideGrid({ .x = 4, .y = 2 }, grid));
 }
+
+TEST(ResonantCollinearityTests, findPointsInGridAlongLines)
+{
+    auto const antennas
+        = std::vector<Point> { { .x = 0, .y = 0 }, { .x = 3, .y = 1 }, { .x = 1, .y = 2 } };
+
+    auto const grid = Grid { .width = 10, .height = 10 };
+
+    EXPECT_THAT(findPointsInGridAlongLines(grid, antennas),
+        UnorderedElementsAre(Point { .x = 4, .y = 8 }, Point { .x = 2, .y = 4 },
+            Point { .x = 5, .y = 0 }, Point { .x = 1, .y = 2 }, Point { .x = 3, .y = 6 },
+            Point { .x = 9, .y = 3 }, Point { .x = 6, .y = 2 }, Point { .x = 3, .y = 1 },
+            Point { .x = 0, .y = 0 }));
+}
