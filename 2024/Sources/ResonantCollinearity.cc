@@ -87,17 +87,27 @@ auto solve(std::string const input) noexcept -> std::pair<std::size_t, std::size
 {
     auto const [grid, antennas] = parseInput(input);
 
-    auto antinodes = antennas | std::views::values
+    auto firstAntinodes = antennas | std::views::values
         | std::views::transform([](auto&& antennas) { return createAntinodes(antennas); })
         | std::views::join
         | std::views::filter([&grid](Point const node) { return isPointInsideGrid(node, grid); });
 
-    PointSet antinodeSet;
-    for (auto pt : antinodes) {
-        antinodeSet.insert(pt);
+    PointSet firstAntinodeSet;
+    for (auto pt : firstAntinodes) {
+        firstAntinodeSet.insert(pt);
     }
 
-    return { antinodeSet.size(), 0 };
+    auto secondAntinodes = antennas | std::views::values
+        | std::views::transform(
+            [&grid](auto&& antennas) { return findPointsInGridAlongLines(grid, antennas); })
+        | std::views::join;
+
+    PointSet secondAntinodeSet;
+    for (auto pt : secondAntinodes) {
+        secondAntinodeSet.insert(pt);
+    }
+
+    return { firstAntinodeSet.size(), secondAntinodeSet.size() };
 }
 
 auto findPointsInGridAlongLine(Grid const grid, Point const pointA, Point const pointB) noexcept
