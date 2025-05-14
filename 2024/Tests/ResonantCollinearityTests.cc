@@ -18,7 +18,6 @@ std::string_view constexpr exampleInput = "............\n"
                                           "............\n"
                                           "............\n";
 
-using testing::_;
 using testing::Pair;
 using testing::UnorderedElementsAre;
 
@@ -26,7 +25,7 @@ using namespace ResonantCollinearity;
 
 TEST(ResonantCollinearlityTests, solvePuzzle)
 {
-    EXPECT_THAT(solve(std::string { exampleInput }), Pair(14, _));
+    EXPECT_THAT(solve(std::string { exampleInput }), Pair(14, 34));
 }
 
 TEST(ResonantCollinearityTests, parseInput)
