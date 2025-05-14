@@ -19,6 +19,7 @@ std::string_view constexpr exampleInput = "............\n"
                                           "............\n";
 
 using testing::Pair;
+using testing::UnorderedElementsAre;
 
 using namespace ResonantCollinearity;
 
@@ -76,6 +77,17 @@ TEST(ResonantCollinearityTests, createAntinodesGivenTwoPoints)
 
     EXPECT_THAT(createAntinodes({ .x = 1, .y = 3 }, { .x = 4, .y = 7 }),
         Pair(Point { .x = -2, .y = -1 }, Point { .x = 7, .y = 11 }));
+}
+
+TEST(ResonantCollinearityTests, createAntinodesGivenMultiplePoints)
+{
+    auto const points
+        = std::vector<Point> { { .x = 4, .y = 3 }, { .x = 8, .y = 4 }, { .x = 5, .y = 5 } };
+
+    EXPECT_THAT(createAntinodes(points),
+        UnorderedElementsAre(Point { .x = 3, .y = 1 }, Point { .x = 0, .y = 2 },
+            Point { .x = 11, .y = 3 }, Point { .x = 12, .y = 5 }, Point { .x = 2, .y = 6 },
+            Point { .x = 6, .y = 7 }));
 }
 
 TEST(ResonantCollinearityTests, arePointsInsideGrid)
