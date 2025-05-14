@@ -5,6 +5,7 @@
 #include <cstddef>
 #include <ostream>
 #include <ranges>
+#include <utility>
 
 namespace ResonantCollinearity {
 
@@ -26,6 +27,28 @@ auto createAntinodes(Point const lhs, Point const rhs) noexcept -> std::pair<Poi
     return { Point { .x = lhs.x - magnitudeX, .y = lhs.y - magnitudeY },
         Point { .x = rhs.x + magnitudeX, .y = rhs.y + magnitudeY } };
 }
+
+auto createAntinodes(std::span<Point const> const points) noexcept -> PointSet
+{
+    auto pointPairs = std::views::cartesian_product(points, points)
+        | std::views::filter(
+            [](std::pair<Point, Point> const& points) { return points.first != points.second; });
+
+    PointSet antinodes;
+
+    for (auto const [firstPoint, secondPoint] : pointPairs) {
+        auto const [firstNode, secondNode] = createAntinodes(firstPoint, secondPoint);
+        antinodes.insert(firstNode);
+        antinodes.insert(secondNode);
+    }
+
+    return antinodes;
+}
+
+auto PointHash::operator()(Point const p) const noexcept -> std::size_t
+{
+    return std::hash<std::size_t> {}(p.x) ^ (std::hash<std::size_t> {}(p.y) * 2);
+};
 
 auto isPointInsideGrid(Point const point, Grid const grid) noexcept -> bool
 {
