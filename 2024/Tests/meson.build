@@ -10,6 +10,7 @@ testSources = [
   'PrintQueueTests.cc',
   'BridgeRepairTests.cc',
   'ResonantCollinearityTests.cc',
+  'DiskFragmenterTests.cc',
 ]
 
 exe = executable(

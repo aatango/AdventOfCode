@@ -7,6 +7,7 @@ library_sources = [
   'PrintQueue.cc',
   'BridgeRepair.cc',
   'ResonantCollinearity.cc',
+  'DiskFragmenter.cc',
 ]
 
 AdventOfCode2024 = library('AdventOfCode2024Lib', library_sources)
