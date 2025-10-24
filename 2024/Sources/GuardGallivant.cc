@@ -3,6 +3,8 @@
 #include <algorithm>
 #include <ostream>
 #include <ranges>
+#include <string>
+#include <unordered_set>
 #include <utility>
 
 namespace {
@@ -54,17 +56,51 @@ auto parseObstructions(std::string_view const input, std::size_t const mapWidth)
         | std::ranges::to<GuardGallivant::Positions>();
 }
 
+struct Step {
+    GuardGallivant::Position position;
+    GuardGallivant::Orientation orientation;
+
+private:
+    friend auto operator==(Step, Step) noexcept -> bool = default;
+};
+
+using Steps = std::unordered_set<Step>;
+
 } // namespace
+
+template <> struct std::hash<Step> {
+    auto operator()(Step const& s) const -> std::size_t
+    {
+        return std::hash<GuardGallivant::Position>()(s.position)
+            ^ std::hash<std::size_t>()(static_cast<std::size_t>(s.orientation) << 1U);
+    }
+};
 
 namespace GuardGallivant {
 
 // NOLINTNEXTLINE(performance-unnecessary-value-param)
 auto solve(std::string const input) noexcept -> std::pair<std::size_t, std::size_t>
 {
-    auto map = Map { input };
+    auto const initialMap = Map { input };
+    auto map = initialMap;
     map.completePatrol();
 
-    return { map.guard().visitedPositions.size(), 0 };
+    auto const partOne = map.guard().visitedPositions.size();
+
+    auto partTwo = std::size_t {};
+    for (auto const p : map.positions()) {
+        if (p == initialMap.guard().position)
+            continue;
+
+        auto mapToObstruct = initialMap;
+        mapToObstruct.addObstruction(p);
+
+        if (!mapToObstruct.completePatrol()) {
+            partTwo++;
+        }
+    }
+
+    return { partOne, partTwo };
 }
 
 void PrintTo(Position const& pos, std::ostream* os) { *os << '(' << pos.x << ',' << pos.y << ')'; }
@@ -82,6 +118,9 @@ Map::Map(std::string_view const input)
 
 auto Map::guard() const noexcept -> Guard const& { return m_guard; }
 auto Map::obstructions() const noexcept -> Positions const& { return m_obstructions; }
+auto Map::positions() const noexcept -> Positions const& { return m_guard.visitedPositions; }
+
+void Map::addObstruction(Position p) noexcept { m_obstructions.insert(p); }
 
 auto Map::completePatrol() noexcept -> bool
 {
@@ -117,6 +156,7 @@ auto Map::completePatrol() noexcept -> bool
         return m_obstructions.contains(positionAhead);
     };
 
+    auto steps = Steps {};
     while (!isEndOfPatrol()) {
         if (isObstructionAhead()) {
             m_guard.orientation = [this]() -> Orientation {
@@ -150,7 +190,14 @@ auto Map::completePatrol() noexcept -> bool
             --m_guard.position.x;
         }
 
+        auto const nextStep
+            = Step { .position = m_guard.position, .orientation = m_guard.orientation };
+
+        if (steps.contains(nextStep))
+            return false;
+
         m_guard.visitedPositions.insert(m_guard.position);
+        steps.insert(nextStep);
     }
 
     return true;

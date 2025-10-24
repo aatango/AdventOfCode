@@ -5,6 +5,7 @@
 #include <iosfwd>
 #include <string_view>
 #include <unordered_set>
+
 namespace GuardGallivant {
 
 auto solve(std::string) noexcept -> std::pair<std::size_t, std::size_t>;
@@ -17,8 +18,6 @@ private:
     friend auto operator==(Position, Position) noexcept -> bool = default;
     friend void PrintTo(Position const&, std::ostream*);
 };
-
-auto taxicabDistance(Position const&, Position const&) noexcept -> std::size_t;
 
 using Positions = std::unordered_set<Position>;
 
@@ -45,9 +44,19 @@ class Map {
 public:
     explicit Map(std::string_view input);
 
+    Map(Map const&) = default;
+    Map(Map&&) = delete;
+
+    ~Map() = default;
+
     [[nodiscard]] auto guard() const noexcept -> Guard const&;
     [[nodiscard]] auto obstructions() const noexcept -> Positions const&;
+    [[nodiscard]] auto positions() const noexcept -> Positions const&;
 
+    void addObstruction(Position) noexcept;
+
+    auto operator=(Map const&) -> Map& = default;
+    auto operator=(Map&&) -> Map& = delete;
     auto completePatrol() noexcept -> bool;
 
 private:

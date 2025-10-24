@@ -19,14 +19,13 @@ std::string_view constexpr exampleInput = "....#.....\n"
                                           "#.........\n"
                                           "......#...\n";
 
-using testing::_;
 using testing::Pair;
 
 using namespace GuardGallivant;
 
-TEST(GuardGallivantTests, SolveFirstPuzzle)
+TEST(GuardGallivantTests, SolveBothPuzzles)
 {
-    EXPECT_THAT(solve(std::string { exampleInput }), Pair(41, _));
+    EXPECT_THAT(solve(std::string { exampleInput }), Pair(41, 6));
 }
 
 TEST(GuardGallivantTests, GuardInitialOrientation)
@@ -95,3 +94,9 @@ INSTANTIATE_TEST_CASE_P(TestMaps, GuardGallivantPatrollingTests,
 
 INSTANTIATE_TEST_CASE_P(
     ExampleMap, GuardGallivantPatrollingTests, testing::Values(std::pair { exampleInput, 41 }));
+
+TEST(GuardGallivantTests, CannotCompletePatrolGuardLoops)
+{
+    auto map = Map(".#..\n...#\n#^..\n..#.\n");
+    EXPECT_FALSE(map.completePatrol());
+}
