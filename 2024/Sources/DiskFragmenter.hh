@@ -6,5 +6,6 @@
 namespace DiskFragmenter {
 
 auto parseInput(std::string_view) noexcept -> std::vector<unsigned>;
+auto defragmentByBlock(std::vector<unsigned> diskMap) noexcept -> std::vector<unsigned>;
 
 } // namespace DiskFragmenter
