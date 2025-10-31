@@ -8,14 +8,21 @@ namespace DiskFragmenter {
 // NOLINTNEXTLINE(performance-unnecessary-value-param)
 auto solve(std::string const input) noexcept -> std::pair<std::size_t, std::size_t>
 {
-    auto const defragmentedDisk = defragmentByBlock(parseInput(input));
+    auto const parsedInput = parseInput(input);
 
-    auto checkSum = std::size_t { 0 };
-    for (auto const [i, id] : defragmentedDisk | std::views::enumerate) {
-        checkSum += i * id;
+    auto partOne = std::size_t {};
+    auto partTwo = std::size_t {};
+
+    for (auto const [i, id] : defragmentByBlock(parsedInput) | std::views::enumerate) {
+        partOne += i * id;
+    }
+    for (auto const [i, id] : defragmentByFile(parsedInput) | std::views::enumerate) {
+        if (id.has_value()) {
+            partTwo += i * (*id);
+        }
     }
 
-    return { checkSum, 0 };
+    return { partOne, partTwo };
 }
 
 auto parseInput(std::string_view const input) noexcept -> std::vector<unsigned>

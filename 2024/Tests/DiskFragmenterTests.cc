@@ -14,9 +14,9 @@ using testing::Pair;
 
 using namespace DiskFragmenter;
 
-TEST(DiskFragmenterTests, solveFirstPuzzle)
+TEST(DiskFragmenterTests, solveBothPuzzles)
 {
-    EXPECT_THAT(solve(std::string { exampleInput }), Pair(1928, _));
+    EXPECT_THAT(solve(std::string { exampleInput }), Pair(1928, 2858));
 }
 
 TEST(DiskFragmenterTests, parseInput)
