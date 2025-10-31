@@ -54,6 +54,51 @@ auto defragmentByBlock(std::vector<unsigned int> diskMap) noexcept -> std::vecto
         }
     }
 
+    defragmentedDisk.shrink_to_fit();
+
+    return defragmentedDisk;
+}
+
+auto defragmentByFile(std::vector<unsigned int> diskMap) noexcept
+    -> std::vector<std::optional<unsigned>>
+{
+    auto const originalMap = diskMap;
+
+    auto defragmentedDisk = std::vector<std::optional<unsigned>> {};
+
+    defragmentedDisk.reserve(std::accumulate(diskMap.cbegin(), diskMap.cend(), 0U));
+
+    auto startPos = std::size_t { 0 };
+    auto endPos = diskMap.size() - 1;
+
+    while (startPos < diskMap.size()) {
+        if (startPos % 2 == 0) {
+            defragmentedDisk.insert(defragmentedDisk.cend(), originalMap[startPos],
+                diskMap[startPos] == 0 ? std::nullopt : std::make_optional(startPos / 2));
+            ++startPos;
+        } else {
+            auto rightPivot = endPos;
+            while (diskMap[startPos] > 0) {
+                if (startPos > rightPivot) {
+                    defragmentedDisk.insert(
+                        defragmentedDisk.cend(), diskMap[startPos], std::nullopt);
+                    diskMap[startPos] = 0;
+                    continue;
+                }
+
+                if (diskMap[startPos] < diskMap[rightPivot] || diskMap[rightPivot] == 0) {
+                    rightPivot -= 2;
+                } else if (diskMap[startPos] >= diskMap[rightPivot]) {
+                    defragmentedDisk.insert(
+                        defragmentedDisk.cend(), diskMap[rightPivot], rightPivot / 2);
+                    diskMap[startPos] -= diskMap[rightPivot];
+                    diskMap[rightPivot] = 0;
+                }
+            }
+            ++startPos;
+        }
+    }
+
     return defragmentedDisk;
 }
 

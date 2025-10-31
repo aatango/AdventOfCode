@@ -1,5 +1,6 @@
 #include "DiskFragmenter.hh"
 
+#include <optional>
 #include <string_view>
 
 #include <gmock/gmock.h>
@@ -31,4 +32,23 @@ TEST(DiskFragmenterTests, defragmentByBlock)
     EXPECT_THAT(defragmentByBlock(parseInput(exampleInput)),
         ElementsAre(
             0, 0, 9, 9, 8, 1, 1, 1, 8, 8, 8, 2, 7, 7, 7, 3, 3, 3, 6, 4, 4, 6, 5, 5, 5, 5, 6, 6));
+}
+
+TEST(DiskFragmenterTests, defragmentByFile)
+{
+    EXPECT_THAT(defragmentByFile({ 1, 2, 3 }), ElementsAre(0, std::nullopt, std::nullopt, 1, 1, 1));
+
+    EXPECT_THAT(defragmentByFile({ 2, 2, 2 }), ElementsAre(0, 0, 1, 1, std::nullopt, std::nullopt));
+
+    EXPECT_THAT(defragmentByFile({ 3, 2, 1, 1, 1 }),
+        ElementsAre(0, 0, 0, 2, 1, std::nullopt, std::nullopt, std::nullopt));
+
+    EXPECT_THAT(defragmentByFile({ 3, 1, 1, 2, 2 }),
+        ElementsAre(0, 0, 0, 1, std::nullopt, 2, 2, std::nullopt, std::nullopt));
+
+    EXPECT_THAT(defragmentByFile(parseInput(exampleInput)),
+        ElementsAre(0, 0, 9, 9, 2, 1, 1, 1, 7, 7, 7, std::nullopt, 4, 4, std::nullopt, 3, 3, 3,
+            std::nullopt, std::nullopt, std::nullopt, std::nullopt, 5, 5, 5, 5, std::nullopt, 6, 6,
+            6, 6, std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt, 8, 8, 8, 8,
+            std::nullopt, std::nullopt));
 }
