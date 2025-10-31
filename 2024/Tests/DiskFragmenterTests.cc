@@ -7,9 +7,16 @@
 
 std::string_view constexpr exampleInput = "2333133121414131402\n";
 
+using testing::_;
 using testing::ElementsAre;
+using testing::Pair;
 
 using namespace DiskFragmenter;
+
+TEST(DiskFragmenterTests, solveFirstPuzzle)
+{
+    EXPECT_THAT(solve(std::string { exampleInput }), Pair(1928, _));
+}
 
 TEST(DiskFragmenterTests, parseInput)
 {

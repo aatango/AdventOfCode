@@ -1,5 +1,6 @@
 #include "BridgeRepair.hh"
 #include "CeresSearch.hh"
+#include "DiskFragmenter.hh"
 #include "GuardGallivant.hh"
 #include "HistorianHysteria.hh"
 #include "MullItOver.hh"
@@ -48,4 +49,5 @@ int main()
     ::solve(06, "GuardGallivant", GuardGallivant::solve);
     ::solve(07, "BridgeRepair", BridgeRepair::solve);
     ::solve(8, "ResonantCollinearity", ResonantCollinearity::solve);
+    ::solve(9, "DiskFragmenter", DiskFragmenter::solve);
 }
