@@ -11,6 +11,7 @@ testSources = [
   'BridgeRepairTests.cc',
   'ResonantCollinearityTests.cc',
   'DiskFragmenterTests.cc',
+  'HoofItTests.cc',
 ]
 
 exe = executable(
