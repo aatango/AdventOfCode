@@ -12,10 +12,13 @@ auto constexpr exampleInput = "89010123\n"
                               "01329801\n"
                               "10456732\n";
 
+using testing::_;
 using testing::Pair;
 using testing::UnorderedElementsAre;
 
 using namespace HoofIt;
+
+TEST(HoofIt, solveFirstPuzzle) { EXPECT_THAT(solve(std::string { exampleInput }), Pair(36, _)); }
 
 TEST(HoofIt, parseMinimalExample)
 {

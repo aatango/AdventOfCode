@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cctype>
+#include <numeric>
 #include <ostream>
 #include <ranges>
 
@@ -85,6 +86,16 @@ auto Map::from(Position const position) const noexcept -> std::size_t
 auto Map::toPosition(std::size_t const index) const noexcept -> Position
 {
     return { .x = index % m_width, .y = index / m_width };
+}
+
+// NOLINTNEXTLINE(performance-unnecessary-value-param)
+auto solve(std::string const input) noexcept -> std::pair<std::size_t, std::size_t>
+{
+    auto const map = Map(input);
+    auto const partOne = std::ranges::fold_left(map.trailheads(), 0,
+        [&](auto acc, auto position) { return acc + map.peaksFrom(position).size(); });
+
+    return { partOne, 0 };
 }
 
 } // namespace HoofIt

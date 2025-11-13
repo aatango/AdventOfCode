@@ -3,9 +3,11 @@
 #include <cstddef>
 #include <functional>
 #include <iosfwd>
+#include <string>
 #include <string_view>
 #include <unordered_map>
 #include <unordered_set>
+#include <utility>
 
 namespace HoofIt {
 
@@ -53,5 +55,7 @@ private:
     Positions m_peaks {};
     Steps m_steps {};
 };
+
+auto solve(std::string input) noexcept -> std::pair<std::size_t, std::size_t>;
 
 } // namespace HoofIt

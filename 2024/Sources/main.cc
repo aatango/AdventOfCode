@@ -3,6 +3,7 @@
 #include "DiskFragmenter.hh"
 #include "GuardGallivant.hh"
 #include "HistorianHysteria.hh"
+#include "HoofIt.hh"
 #include "MullItOver.hh"
 #include "PrintQueue.hh"
 #include "RedNosedReports.hh"
@@ -50,4 +51,5 @@ int main()
     ::solve(07, "BridgeRepair", BridgeRepair::solve);
     ::solve(8, "ResonantCollinearity", ResonantCollinearity::solve);
     ::solve(9, "DiskFragmenter", DiskFragmenter::solve);
+    ::solve(10, "HoofIt", HoofIt::solve);
 }
