@@ -39,6 +39,7 @@ public:
     [[nodiscard]] auto trailheads() const noexcept -> Positions const&;
     [[nodiscard]] auto peaks() const noexcept -> Positions const&;
     [[nodiscard]] auto steps() const noexcept -> Steps const&;
+    [[nodiscard]] auto peaksFrom(Position) const noexcept -> Positions;
 
 private:
     [[nodiscard]] auto from(Position) const noexcept -> std::size_t;

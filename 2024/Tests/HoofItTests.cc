@@ -116,3 +116,43 @@ TEST(HoofIt, parseExampleInput)
             Pair(Position { .x = 7, .y = 6 }, Positions { { .x = 7, .y = 5 }, { .x = 7, .y = 7 } }),
             Pair(Position { .x = 7, .y = 7 }, Positions { { .x = 6, .y = 7 } })));
 }
+
+TEST(HoofIt, findPeaksFromMinimalExample)
+{
+    auto const map = Map("0123\n1234\n8765\n9876\n");
+    EXPECT_THAT(
+        map.peaksFrom({ .x = 0, .y = 0 }), UnorderedElementsAre(Position { .x = 0, .y = 3 }));
+}
+
+TEST(HoofIt, findPeaksFromExampleInput)
+{
+    auto const map = Map(exampleInput);
+
+    EXPECT_THAT(map.peaksFrom({ .x = 2, .y = 0 }),
+        UnorderedElementsAre(Position { .x = 0, .y = 3 }, Position { .x = 1, .y = 0 },
+            Position { .x = 4, .y = 3 }, Position { .x = 4, .y = 5 }, Position { .x = 5, .y = 4 }));
+    EXPECT_THAT(map.peaksFrom({ .x = 4, .y = 0 }),
+        UnorderedElementsAre(Position { .x = 0, .y = 3 }, Position { .x = 1, .y = 0 },
+            Position { .x = 4, .y = 3 }, Position { .x = 4, .y = 5 }, Position { .x = 5, .y = 2 },
+            Position { .x = 5, .y = 4 }));
+    EXPECT_THAT(map.peaksFrom({ .x = 4, .y = 2 }),
+        UnorderedElementsAre(Position { .x = 0, .y = 3 }, Position { .x = 1, .y = 0 },
+            Position { .x = 4, .y = 3 }, Position { .x = 4, .y = 5 }, Position { .x = 5, .y = 4 }));
+    EXPECT_THAT(map.peaksFrom({ .x = 6, .y = 4 }),
+        UnorderedElementsAre(
+            Position { .x = 4, .y = 3 }, Position { .x = 5, .y = 2 }, Position { .x = 5, .y = 4 }));
+    EXPECT_THAT(
+        map.peaksFrom({ .x = 2, .y = 5 }), UnorderedElementsAre(Position { .x = 4, .y = 6 }));
+    EXPECT_THAT(map.peaksFrom({ .x = 5, .y = 5 }),
+        UnorderedElementsAre(
+            Position { .x = 4, .y = 3 }, Position { .x = 5, .y = 2 }, Position { .x = 5, .y = 4 }));
+    EXPECT_THAT(map.peaksFrom({ .x = 0, .y = 6 }),
+        UnorderedElementsAre(Position { .x = 0, .y = 3 }, Position { .x = 1, .y = 0 },
+            Position { .x = 4, .y = 3 }, Position { .x = 4, .y = 5 }, Position { .x = 5, .y = 4 }));
+    EXPECT_THAT(map.peaksFrom({ .x = 6, .y = 6 }),
+        UnorderedElementsAre(
+            Position { .x = 4, .y = 3 }, Position { .x = 5, .y = 2 }, Position { .x = 5, .y = 4 }));
+    EXPECT_THAT(map.peaksFrom({ .x = 1, .y = 7 }),
+        UnorderedElementsAre(Position { .x = 0, .y = 3 }, Position { .x = 1, .y = 0 },
+            Position { .x = 4, .y = 3 }, Position { .x = 4, .y = 5 }, Position { .x = 5, .y = 4 }));
+}

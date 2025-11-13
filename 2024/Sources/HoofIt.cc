@@ -43,6 +43,21 @@ auto Map::trailheads() const noexcept -> Positions const& { return m_trailheads;
 auto Map::peaks() const noexcept -> Positions const& { return m_peaks; }
 auto Map::steps() const noexcept -> Steps const& { return m_steps; }
 
+// NOLINTNEXTLINE(misc-no-recursion)
+auto Map::peaksFrom(Position startPosition) const noexcept -> Positions
+{
+    if (m_peaks.contains(startPosition)) {
+        return { startPosition };
+    }
+
+    auto reachedPeaks = Positions {};
+    for (auto const nextPosition : m_steps.at(startPosition)) {
+        reachedPeaks.insert_range(peaksFrom(nextPosition));
+    }
+
+    return reachedPeaks;
+}
+
 auto Map::neighboursOf(Position const position) const noexcept -> Positions
 {
     auto result = Positions {};
